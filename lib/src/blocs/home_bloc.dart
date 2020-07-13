@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -21,7 +19,7 @@ class HomeBloc {
     _trendingTv.sink.add(tvList);
   }
 
-  fetchTrending() async{
+  fetchTrending() async {
     final trendingList = await _moviesApiProvider.fetchTrending();
     _trending.sink.add(trendingList);
   }

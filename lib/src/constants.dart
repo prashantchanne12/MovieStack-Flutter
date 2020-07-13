@@ -1,5 +1,6 @@
 const kApiKey = 'e4c41ae3e8578a454aa7575f144a0f14';
 
+const kImageUrl = 'https://image.tmdb.org/t/p/original';
 const kTopRated =
     'https://api.themoviedb.org/3/movie/top_rated?api_key=$kApiKey'
     '&language=en-US&page=';

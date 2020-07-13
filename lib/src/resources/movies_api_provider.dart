@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' show get;
 import 'package:movie_stack/src/constants.dart';
-import 'package:movie_stack/src/models/movie_model.dart';
 
 class MoviesApiProvider {
   Future<List<dynamic>> fetchTrendingMovies() async {
