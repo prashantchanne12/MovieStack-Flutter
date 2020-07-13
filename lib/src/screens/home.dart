@@ -9,17 +9,17 @@ import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/trending_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
-import 'package:movie_stack/src/widgets/trending_carousel.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 MoviesApiProvider moviesApiProvider = MoviesApiProvider();
+var model;
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-//    homeBloc.fetchTrendingMovies();
-//    homeBloc.fetchTrendingTV();
-
+    print('build called');
+    homeBloc.fetchTrendingMovies();
+    homeBloc.fetchTrendingTV();
     homeBloc.fetchTrending();
 
     return Scaffold(
@@ -35,18 +35,26 @@ class Home extends StatelessWidget {
   trendingCarousel() {
     return Column(
       children: <Widget>[
-        heading(),
-        swiper(),
+        heading(title: 'Trending'),
+        trendingSwiper(),
+        SizedBox(height: 20.0),
+        heading(title: 'Movies'),
+        swiper(stream: homeBloc.movies, isMovie: true),
+        SizedBox(height: 10.0),
+        heading(title: 'TV Shows'),
+        swiper(stream: homeBloc.tv, isMovie: false),
+
+//        tvHeading(),
       ],
     );
   }
 
-  Container heading() {
+  Widget heading({@required String title}) {
     return Container(
       padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10.0),
       alignment: Alignment.centerLeft,
       child: Text(
-        'Trending',
+        '$title',
         style: TextStyle(
           color: kLightGrey,
           fontSize: 25.0,
@@ -57,7 +65,7 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget swiper() {
+  Widget trendingSwiper() {
     return Container(
       height: 260.0,
       child: StreamBuilder(
@@ -143,7 +151,7 @@ class Home extends StatelessWidget {
                   animation: true,
                   percent: trendingModel.vote_average / 10,
                   circularStrokeCap: CircularStrokeCap.round,
-                  progressColor: const Color(0xff4B97C5),
+                  progressColor: kAccentColor,
                 ),
                 SizedBox(
                   width: 8.0,
@@ -160,6 +168,103 @@ class Home extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget swiper(
+      {@required Stream<List<dynamic>> stream, @required bool isMovie}) {
+    return Container(
+      height: 250.0,
+      padding: EdgeInsets.only(left: 5.0),
+      child: StreamBuilder(
+        stream: stream,
+        builder: (BuildContext context, snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              height: 200.0,
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+          return ListView.builder(
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (BuildContext context, int index) {
+              if (isMovie) {
+                model = MovieModel.fromJson(snapshot.data[index]);
+              } else {
+                model = TvModel.fromJson(snapshot.data[index]);
+              }
+              return Container(
+                height: 220.0,
+                padding: EdgeInsets.only(left: 15.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(5.0),
+                        child: CachedNetworkImage(
+                          imageUrl: '$kImageUrl${model.poster_path}',
+                          placeholder: (context, url) {
+                            return Container(
+                              height: 200.0,
+                              width: 140.0,
+                              decoration: BoxDecoration(
+                                color: kDarkBlue2,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                            );
+                          },
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Container(
+                      width: 120.0,
+                      child: Text(
+                        isMovie ? model.title : model.name,
+                        style: TextStyle(
+                          color: kLightGrey,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    RatingBar(
+                      initialRating: model.vote_average / 2,
+                      itemSize: 13.0,
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      allowHalfRating: true,
+                      itemCount: 5,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: kAccentColor,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+            itemCount: snapshot.data.length,
+          );
+        },
       ),
     );
   }
