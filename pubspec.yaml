@@ -34,6 +34,8 @@ dependencies:
   rxdart: ^0.24.1
   flutter_swiper: ^1.1.6
   cached_network_image: ^2.2.0+1
+  flutter_rating_bar: ^3.0.1+1
+  percent_indicator: ^2.1.5
 
 
 
