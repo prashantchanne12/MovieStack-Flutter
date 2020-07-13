@@ -1,0 +1,24 @@
+const kApiKey = 'e4c41ae3e8578a454aa7575f144a0f14';
+
+const kTopRated =
+    'https://api.themoviedb.org/3/movie/top_rated?api_key=$kApiKey'
+    '&language=en-US&page=';
+const kPopular = 'https://api.themoviedb.org/3/movie/popular?api_key=$kApiKey'
+    '&language=en-US&page=';
+const kNowPlaying =
+    'https://api.themoviedb.org/3/movie/now_playing?api_key=$kApiKey'
+    '&language=en-US&page=';
+const kUpcoming = 'https://api.themoviedb.org/3/movie/upcoming?api_key=$kApiKey'
+    '&language=en-US&page=';
+const kLatest = 'https://api.themoviedb.org/3/movie/latest?api_key=$kApiKey'
+    '&language=en-US&page=';
+const kTrending =
+    'https://api.themoviedb.org/3/trending/all/day?api_key=$kApiKey';
+const kTrendingMovies =
+    'https://api.themoviedb.org/3/trending/movie/day?api_key=$kApiKey';
+const kTrendingTv =
+    'https://api.themoviedb.org/3/trending/tv/day?api_key=$kApiKey';
+const kTVPopular =
+    'https://api.themoviedb.org/3/tv/popular?api_key=$kApiKey&language=en-US&page=';
+const kTVTopRated =
+    'https://api.themoviedb.org/3/tv/top_rated?api_key=$kApiKey&language=en-US&page=';
