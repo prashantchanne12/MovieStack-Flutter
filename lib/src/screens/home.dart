@@ -9,6 +9,7 @@ import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/trending_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
+import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 MoviesApiProvider moviesApiProvider = MoviesApiProvider();
@@ -43,7 +44,9 @@ class Home extends StatelessWidget {
         SizedBox(height: 10.0),
         heading(title: 'TV Shows'),
         swiper(stream: homeBloc.tv, isMovie: false),
-
+        SizedBox(
+          height: 10.0,
+        ),
 //        tvHeading(),
       ],
     );
@@ -72,10 +75,7 @@ class Home extends StatelessWidget {
         stream: homeBloc.trending,
         builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
-            return Container(
-              height: 200.0,
-              child: Center(child: CircularProgressIndicator()),
-            );
+            return loadingPlaceholder(context);
           }
           return Swiper(
             itemBuilder: (BuildContext context, int index) {
@@ -86,23 +86,25 @@ class Home extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
-                child: Stack(
+                child: Column(
                   children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: CachedNetworkImage(
-                        imageUrl: '$kImageUrl${trendingModel.backdrop_path}',
-                        placeholder: (context, url) {
-                          return Container(
-                            height: 200.0,
-                            decoration: BoxDecoration(
-                              color: kDarkBlue2,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0)),
-                            ),
-                          );
-                        },
-                        fit: BoxFit.cover,
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: CachedNetworkImage(
+                          imageUrl: '$kImageUrl${trendingModel.backdrop_path}',
+                          placeholder: (context, url) {
+                            return Container(
+                              height: 200.0,
+                              decoration: BoxDecoration(
+                                color: kDarkBlue2,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                            );
+                          },
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                     bottomInfo(isMovie, trendingModel),
@@ -124,9 +126,8 @@ class Home extends StatelessWidget {
   }
 
   Widget bottomInfo(bool isMovie, TrendingModel trendingModel) {
-    return Positioned(
-      left: 5.0,
-      bottom: 0.0,
+    return Container(
+      padding: EdgeInsets.only(top: 2.0, left: 5.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -181,10 +182,7 @@ class Home extends StatelessWidget {
         stream: stream,
         builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
-            return Container(
-              height: 200.0,
-              child: Center(child: CircularProgressIndicator()),
-            );
+            return loadingPlaceholder(context);
           }
           return ListView.builder(
             physics: BouncingScrollPhysics(),
@@ -254,9 +252,7 @@ class Home extends StatelessWidget {
                         Icons.star,
                         color: kAccentColor,
                       ),
-                      onRatingUpdate: (rating) {
-                        print(rating);
-                      },
+                      onRatingUpdate: null,
                     ),
                   ],
                 ),
