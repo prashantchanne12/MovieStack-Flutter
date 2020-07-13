@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 const kApiKey = 'e4c41ae3e8578a454aa7575f144a0f14';
 
 const kImageUrl = 'https://image.tmdb.org/t/p/original';
@@ -23,3 +25,5 @@ const kTVPopular =
     'https://api.themoviedb.org/3/tv/popular?api_key=$kApiKey&language=en-US&page=';
 const kTVTopRated =
     'https://api.themoviedb.org/3/tv/top_rated?api_key=$kApiKey&language=en-US&page=';
+
+const kPrimaryColor = const Color(0xff05070c);

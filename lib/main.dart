@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_stack/src/screens/home.dart';
+import 'src/constants.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MovieStack',
-      theme: ThemeData(fontFamily: 'mont'),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'mont',
+      ),
       home: Home(),
     );
   }

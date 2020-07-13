@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -20,6 +21,7 @@ class Home extends StatelessWidget {
     homeBloc.fetchTrending();
 
     return Scaffold(
+      backgroundColor: kPrimaryColor,
       body: SafeArea(
         child: ListView(
           children: <Widget>[trendingCarousel()],
@@ -30,12 +32,18 @@ class Home extends StatelessWidget {
 
   trendingCarousel() {
     return Container(
-      height: 250.0,
+      height: 220.0,
       child: StreamBuilder(
         stream: homeBloc.trending,
         builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Container(
+              margin: EdgeInsets.only(left: 20.0, right: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              ),
+            );
           }
           return Swiper(
             itemBuilder: (BuildContext context, int index) {
@@ -45,9 +53,19 @@ class Home extends StatelessWidget {
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        '$kImageUrl${trendingModel.backdrop_path}'),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: CachedNetworkImage(
+                    imageUrl: '$kImageUrl${trendingModel.backdrop_path}',
+                    placeholder: (context, url) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                      );
+                    },
                     fit: BoxFit.cover,
                   ),
                 ),
