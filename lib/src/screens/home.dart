@@ -97,54 +97,7 @@ class Home extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Positioned(
-                      left: 5.0,
-                      bottom: 0.0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              isMovie
-                                  ? trendingModel.title
-                                  : trendingModel.name,
-                              style: TextStyle(
-                                color: kLightGrey,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17.0,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                CircularPercentIndicator(
-                                  radius: 30.0,
-                                  lineWidth: 4.0,
-                                  animation: true,
-                                  percent: trendingModel.vote_average / 10,
-                                  circularStrokeCap: CircularStrokeCap.round,
-                                  progressColor: const Color(0xff4B97C5),
-                                ),
-                                SizedBox(
-                                  width: 8.0,
-                                ),
-                                Text(
-                                  '${trendingModel.vote_average * 10} %',
-                                  style: TextStyle(
-                                    color: kLightGrey,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    bottomInfo(isMovie, trendingModel),
                   ],
                 ),
               );
@@ -158,6 +111,55 @@ class Home extends StatelessWidget {
             curve: Curves.easeInOut,
           );
         },
+      ),
+    );
+  }
+
+  Widget bottomInfo(bool isMovie, TrendingModel trendingModel) {
+    return Positioned(
+      left: 5.0,
+      bottom: 0.0,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Text(
+              isMovie ? trendingModel.title : trendingModel.name,
+              style: TextStyle(
+                color: kLightGrey,
+                fontWeight: FontWeight.w600,
+                fontSize: 17.0,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                CircularPercentIndicator(
+                  radius: 30.0,
+                  lineWidth: 4.0,
+                  animation: true,
+                  percent: trendingModel.vote_average / 10,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  progressColor: const Color(0xff4B97C5),
+                ),
+                SizedBox(
+                  width: 8.0,
+                ),
+                Text(
+                  '${trendingModel.vote_average * 10} %',
+                  style: TextStyle(
+                    color: kLightGrey,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
