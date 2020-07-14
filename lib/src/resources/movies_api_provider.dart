@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' show get;
 import 'package:movie_stack/src/constants.dart';
+import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/movie_details_model.dart';
 
 class MoviesApiProvider {
@@ -27,5 +28,12 @@ class MoviesApiProvider {
         'https://api.themoviedb.org/3/$tvOrMovie/$id?api_key=$kApiKey&language=en-US');
     final jsonBody = json.decode(response.body);
     return DetailsModel.fromJson(jsonBody);
+  }
+
+  Future<CastModel> fetchCast(int id, String tvOrMovie) async {
+    final response = await get(
+        'https://api.themoviedb.org/3/$tvOrMovie/$id/credits?api_key=$kApiKey');
+    final jsonBody = json.decode(response.body);
+    return CastModel.fromJson(jsonBody);
   }
 }
