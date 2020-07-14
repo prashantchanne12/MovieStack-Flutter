@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_stack/src/blocs/home_bloc.dart';
 import 'package:movie_stack/src/screens/home.dart';
 
 void main() {
@@ -16,7 +17,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'mont',
       ),
-      home: Home(),
+      onGenerateRoute: routes,
     );
+  }
+
+  Route routes(RouteSettings settings) {
+    if (settings.name == '/') {
+      return MaterialPageRoute(builder: (BuildContext context) {
+        homeBloc.fetchTrendingMovies();
+        homeBloc.fetchTrendingTV();
+        homeBloc.fetchTrending();
+        return Home();
+      });
+    }
   }
 }

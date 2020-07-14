@@ -20,11 +20,6 @@ var model;
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('build called');
-    homeBloc.fetchTrendingMovies();
-    homeBloc.fetchTrendingTV();
-    homeBloc.fetchTrending();
-
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
