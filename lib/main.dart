@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_stack/src/screens/home.dart';
-import 'src/constants.dart';
 
 void main() {
   runApp(MyApp());

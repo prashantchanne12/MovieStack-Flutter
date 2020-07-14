@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie_stack/src/blocs/home_bloc.dart';
-import 'package:movie_stack/src/blocs/movie_details_bloc.dart';
+import 'package:movie_stack/src/blocs/details_page_bloc.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/trending_model.dart';
@@ -109,7 +109,8 @@ class Home extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: CachedNetworkImage(
-                            imageUrl: '$kImageUrl${trendingModel.backdrop_path}',
+                            imageUrl:
+                                '$kImageUrl${trendingModel.backdrop_path}',
                             placeholder: (context, url) {
                               return Container(
                                 height: 200.0,

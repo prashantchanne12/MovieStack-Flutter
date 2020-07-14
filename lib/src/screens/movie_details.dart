@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_stack/src/blocs/movie_details_bloc.dart';
+import 'package:movie_stack/src/blocs/details_page_bloc.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../models/movie_details_model.dart';
