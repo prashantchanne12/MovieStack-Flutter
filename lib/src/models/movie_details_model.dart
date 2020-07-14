@@ -1,4 +1,4 @@
-class MovieDetailsModel {
+class DetailsModel {
   int id;
   String backdrop_path;
   int budget;
@@ -14,9 +14,16 @@ class MovieDetailsModel {
   String title;
   double vote_average;
   int vote_count;
+  String first_air_date;
+  String last_air_date;
+  String name;
+  int number_of_episodes;
+  int number_of_seasons;
+  List<dynamic> origin_country;
+  List<dynamic> seasons;
 
   // Named constructor
-  MovieDetailsModel.fromJson(Map<String, dynamic> parsedJson) {
+  DetailsModel.fromJson(Map<String, dynamic> parsedJson) {
     id = parsedJson['id'];
     backdrop_path = parsedJson['backdrop_path'];
     budget = parsedJson['budget'];
@@ -32,5 +39,12 @@ class MovieDetailsModel {
     title = parsedJson['title'];
     vote_average = parsedJson['vote_average'];
     vote_count = parsedJson['vote_count'];
+    first_air_date = parsedJson['first_air_date'];
+    last_air_date = parsedJson['last_air_date'];
+    name = parsedJson['name'];
+    number_of_episodes = parsedJson['number_of_episodes'];
+    number_of_seasons = parsedJson['number_of_seasons'];
+    origin_country = parsedJson['origin_country'];
+    seasons = parsedJson['seasons'];
   }
 }

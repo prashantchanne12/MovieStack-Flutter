@@ -10,7 +10,7 @@ import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/trending_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
-import 'package:movie_stack/src/screens/movie_details.dart';
+import 'package:movie_stack/src/screens/details_page.dart';
 import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -88,10 +88,15 @@ class Home extends StatelessWidget {
               bool isMovie = trendingModel.media_type == 'movie';
               return GestureDetector(
                 onTap: () {
-                  movieDetailsBloc.fetchMovieDetails(trendingModel.id);
+                  detailsBloc.fetchDetails(
+                      trendingModel.id, isMovie ? 'movie' : 'tv');
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MovieDetails()),
+                    MaterialPageRoute(
+                      builder: (context) => DetailsPage(
+                        isMovie: isMovie,
+                      ),
+                    ),
                   );
                 },
                 child: Container(

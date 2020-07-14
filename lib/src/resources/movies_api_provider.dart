@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' show get;
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/movie_details_model.dart';
-import 'package:movie_stack/src/models/tv_details_model.dart';
 
 class MoviesApiProvider {
   Future<List<dynamic>> fetchTrendingMovies() async {
@@ -23,17 +22,10 @@ class MoviesApiProvider {
     return jsonBody['results'];
   }
 
-  Future<MovieDetailsModel> fetchMovieDetails(int id) async {
+  Future<DetailsModel> fetchDetails(int id, String tvOrMovie) async {
     final response = await get(
-        'https://api.themoviedb.org/3/movie/$id?api_key=$kApiKey&language=en-US');
+        'https://api.themoviedb.org/3/$tvOrMovie/$id?api_key=$kApiKey&language=en-US');
     final jsonBody = json.decode(response.body);
-    return MovieDetailsModel.fromJson(jsonBody);
-  }
-
-  Future<TvDetailsModel> fetchTvDetails(int id) async {
-    final response = await get(
-        'https://api.themoviedb.org/3/tv/$id?api_key=$kApiKey&language=en-US');
-    final jsonBody = json.decode(response.body);
-    return TvDetailsModel.fromJson(jsonBody);
+    return DetailsModel.fromJson(jsonBody);
   }
 }

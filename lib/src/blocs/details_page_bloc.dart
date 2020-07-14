@@ -1,35 +1,26 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:movie_stack/src/models/movie_details_model.dart';
-import 'package:movie_stack/src/models/tv_details_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class MovieDetailsBloc {
-  final _movieDetails = PublishSubject<MovieDetailsModel>();
-  final _tvDetails = PublishSubject<TvDetailsModel>();
+class DetailsBloc {
+  final _details = PublishSubject<DetailsModel>();
   final _moviesApiProvider = MoviesApiProvider();
 
   // Add data to Stream
-  fetchMovieDetails(int id) async {
-    MovieDetailsModel movieDetails =
-        await _moviesApiProvider.fetchMovieDetails(id);
-    _movieDetails.sink.add(movieDetails);
-  }
-
-  fetchTvDetails(int id) async {
-    TvDetailsModel tvDetailsModel = await _moviesApiProvider.fetchTvDetails(id);
-    _tvDetails.sink.add(tvDetailsModel);
+  fetchDetails(int id, String tvOrMovie) async {
+    DetailsModel movieDetails =
+        await _moviesApiProvider.fetchDetails(id, tvOrMovie);
+    _details.sink.add(movieDetails);
   }
 
   // Retrieve data from Stream
-  Stream<MovieDetailsModel> get movie => _movieDetails.stream;
-  Stream<TvDetailsModel> get tv => _tvDetails.stream;
+  Stream<DetailsModel> get details => _details.stream;
 
   dispose() {
-    _movieDetails.close();
-    _tvDetails.close();
+    _details.close();
   }
 }
 
-MovieDetailsBloc movieDetailsBloc = MovieDetailsBloc();
+DetailsBloc detailsBloc = DetailsBloc();

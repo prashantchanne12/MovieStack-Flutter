@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_stack/src/blocs/details_page_bloc.dart';
@@ -9,7 +8,9 @@ import '../models/movie_details_model.dart';
 var children;
 int count;
 
-class MovieDetails extends StatelessWidget {
+class DetailsPage extends StatelessWidget {
+  final bool isMovie;
+  DetailsPage({@required this.isMovie});
   @override
   Widget build(BuildContext context) {
     children = <Widget>[];
@@ -30,9 +31,8 @@ class MovieDetails extends StatelessWidget {
 
   stream() {
     return StreamBuilder(
-      stream: movieDetailsBloc.movie,
-      builder:
-          (BuildContext context, AsyncSnapshot<MovieDetailsModel> snapshot) {
+      stream: detailsBloc.details,
+      builder: (BuildContext context, AsyncSnapshot<DetailsModel> snapshot) {
         if (!snapshot.hasData) {
           return Container(
             height: MediaQuery.of(context).size.height * 0.65,
@@ -44,8 +44,8 @@ class MovieDetails extends StatelessWidget {
             ),
           );
         }
-        MovieDetailsModel movieDetailsModel = snapshot.data;
-        movieDetailsModel.genres.forEach((element) {
+        DetailsModel detailsModel = snapshot.data;
+        detailsModel.genres.forEach((element) {
           if (count <= 3) {
             children.add(createGenres(element['name']));
           }
@@ -55,7 +55,7 @@ class MovieDetails extends StatelessWidget {
           children: <Widget>[
             createPoster(
               context: context,
-              movieDetailsModel: movieDetailsModel,
+              model: detailsModel,
             ),
             SizedBox(
               height: 15.0,
@@ -63,12 +63,12 @@ class MovieDetails extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                createTitle(movieDetailsModel: movieDetailsModel),
+                createTitle(model: detailsModel),
                 SizedBox(
                   height: 15.0,
                 ),
-                genresAndRelease(movieDetailsModel: movieDetailsModel),
-                plot(movieDetailsModel: movieDetailsModel)
+                genresAndRelease(model: detailsModel),
+                plot(model: detailsModel)
               ],
             ),
           ],
@@ -78,8 +78,7 @@ class MovieDetails extends StatelessWidget {
   }
 
   Container createPoster(
-      {@required BuildContext context,
-      @required MovieDetailsModel movieDetailsModel}) {
+      {@required BuildContext context, @required DetailsModel model}) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.65,
       width: double.infinity,
@@ -87,14 +86,14 @@ class MovieDetails extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
         child: Image.network(
-          '$kImageUrl${movieDetailsModel.poster_path}',
+          '$kImageUrl${model.poster_path}',
           fit: BoxFit.cover,
         ),
       ),
     );
   }
 
-  Row createTitle({@required MovieDetailsModel movieDetailsModel}) {
+  Row createTitle({@required DetailsModel model}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -102,7 +101,7 @@ class MovieDetails extends StatelessWidget {
           padding: EdgeInsets.only(left: 10.0),
           alignment: Alignment.centerLeft,
           child: Text(
-            '${movieDetailsModel.title}',
+            '${isMovie ? model.title : model.name}',
             style: TextStyle(
               fontSize: 25.0,
               color: Colors.white,
@@ -121,7 +120,7 @@ class MovieDetails extends StatelessWidget {
                   radius: 30.0,
                   lineWidth: 4.0,
                   animation: true,
-                  percent: movieDetailsModel.vote_average / 10,
+                  percent: model.vote_average / 10,
                   circularStrokeCap: CircularStrokeCap.round,
                   progressColor: kAccentColor,
                 ),
@@ -130,7 +129,7 @@ class MovieDetails extends StatelessWidget {
                 width: 8.0,
               ),
               Text(
-                '${movieDetailsModel.vote_average * 10} %',
+                '${model.vote_average * 10} %',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w600,
@@ -144,14 +143,15 @@ class MovieDetails extends StatelessWidget {
     );
   }
 
-  Widget genresAndRelease({@required MovieDetailsModel movieDetailsModel}) {
+  Widget genresAndRelease({@required DetailsModel model}) {
     return Padding(
       padding: EdgeInsets.only(left: 10.0),
       child: Row(
         children: <Widget>[
           Container(
             child: Text(
-              '${movieDetailsModel.release_date}'.substring(0, 4),
+              '${isMovie ? model.release_date : model.first_air_date}'
+                  .substring(0, 4),
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
@@ -176,7 +176,7 @@ class MovieDetails extends StatelessWidget {
     );
   }
 
-  Column plot({@required MovieDetailsModel movieDetailsModel}) {
+  Column plot({@required DetailsModel model}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -194,7 +194,7 @@ class MovieDetails extends StatelessWidget {
         Container(
           padding: EdgeInsets.only(left: 10.0, top: 5.0),
           child: Text(
-            '${movieDetailsModel.overview}',
+            '${model.overview}',
             style: TextStyle(
               color: Colors.white,
             ),
