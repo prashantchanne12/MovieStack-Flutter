@@ -35,5 +35,3 @@ class HomeBloc {
     _trending.close();
   }
 }
-
-HomeBloc homeBloc = HomeBloc();

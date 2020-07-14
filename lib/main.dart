@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_stack/src/blocs/home_bloc.dart';
+import 'package:movie_stack/src/blocs/details_page_provider.dart';
+import 'package:movie_stack/src/blocs/home_provider.dart';
 import 'package:movie_stack/src/screens/home.dart';
 
 void main() {
@@ -11,19 +12,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MovieStack',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'mont',
+    return HomeProvider(
+      child: DetailsPageProvider(
+        child: MaterialApp(
+          title: 'MovieStack',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'mont',
+          ),
+          onGenerateRoute: routes,
+        ),
       ),
-      onGenerateRoute: routes,
     );
   }
 
   Route routes(RouteSettings settings) {
     if (settings.name == '/') {
       return MaterialPageRoute(builder: (BuildContext context) {
+        final homeBloc = HomeProvider.of(context);
         homeBloc.fetchTrendingMovies();
         homeBloc.fetchTrendingTV();
         homeBloc.fetchTrending();

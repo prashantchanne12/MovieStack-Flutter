@@ -19,6 +19,7 @@ class DetailsBloc {
 
   fetchCast(int id, String tvOrMovie) async {
     CastModel castModel = await _moviesApiProvider.fetchCast(id, tvOrMovie);
+    print(castModel.cast.length);
     _cast.sink.add(castModel);
   }
 
@@ -31,5 +32,3 @@ class DetailsBloc {
     _cast.close();
   }
 }
-
-DetailsBloc detailsBloc = DetailsBloc();

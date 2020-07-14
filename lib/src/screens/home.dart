@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/blocs/home_bloc.dart';
 import 'package:movie_stack/src/blocs/details_page_bloc.dart';
+import 'package:movie_stack/src/blocs/home_provider.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/trending_model.dart';
@@ -20,6 +22,8 @@ var model;
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final bloc = HomeProvider.of(context);
+    final detailsBloc = DetailsPageProvider.of(context);
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
@@ -32,22 +36,22 @@ class Home extends StatelessWidget {
         backgroundColor: kPrimaryColor,
       ),
       body: ListView(
-        children: <Widget>[trendingCarousel()],
+        children: <Widget>[trendingCarousel(bloc, detailsBloc)],
       ),
     );
   }
 
-  trendingCarousel() {
+  trendingCarousel(HomeBloc bloc, DetailsBloc detailsBloc) {
     return Column(
       children: <Widget>[
         heading(title: 'Trending'),
-        trendingSwiper(),
+        trendingSwiper(bloc, detailsBloc),
         SizedBox(height: 20.0),
         heading(title: 'Movies'),
-        swiper(stream: homeBloc.movies, isMovie: true),
+        swiper(stream: bloc.movies, isMovie: true, detailsBloc: detailsBloc),
         SizedBox(height: 10.0),
         heading(title: 'TV Shows'),
-        swiper(stream: homeBloc.tv, isMovie: false),
+        swiper(stream: bloc.tv, isMovie: false, detailsBloc: detailsBloc),
         SizedBox(
           height: 10.0,
         ),
@@ -72,11 +76,11 @@ class Home extends StatelessWidget {
     );
   }
 
-  Widget trendingSwiper() {
+  Widget trendingSwiper(HomeBloc bloc, DetailsBloc detailsBloc) {
     return Container(
       height: 260.0,
       child: StreamBuilder(
-        stream: homeBloc.trending,
+        stream: bloc.trending,
         builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
             return loadingPlaceholder(context);
@@ -88,7 +92,8 @@ class Home extends StatelessWidget {
               bool isMovie = trendingModel.media_type == 'movie';
               return GestureDetector(
                 onTap: () {
-                  openDetailsScreen(context, trendingModel.id, isMovie);
+                  openDetailsScreen(
+                      context, trendingModel.id, isMovie, detailsBloc);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -184,7 +189,9 @@ class Home extends StatelessWidget {
   }
 
   Widget swiper(
-      {@required Stream<List<dynamic>> stream, @required bool isMovie}) {
+      {@required Stream<List<dynamic>> stream,
+      @required bool isMovie,
+      @required DetailsBloc detailsBloc}) {
     return Container(
       height: 250.0,
       padding: EdgeInsets.only(left: 5.0),
@@ -207,7 +214,8 @@ class Home extends StatelessWidget {
                 onTap: () {
                   MovieModel movieModel =
                       MovieModel.fromJson(snapshot.data[index]);
-                  openDetailsScreen(context, movieModel.id, isMovie);
+                  openDetailsScreen(
+                      context, movieModel.id, isMovie, detailsBloc);
                 },
                 child: Container(
                   height: 220.0,
@@ -282,8 +290,10 @@ class Home extends StatelessWidget {
     );
   }
 
-  openDetailsScreen(BuildContext context, int id, bool isMovie) {
+  openDetailsScreen(
+      BuildContext context, int id, bool isMovie, DetailsBloc detailsBloc) {
     detailsBloc.fetchDetails(id, isMovie ? 'movie' : 'tv');
+    detailsBloc.fetchCast(id, isMovie ? 'movie' : 'tv');
     Navigator.push(
       context,
       MaterialPageRoute(
