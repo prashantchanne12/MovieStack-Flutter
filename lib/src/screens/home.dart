@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie_stack/src/blocs/home_bloc.dart';
+import 'package:movie_stack/src/blocs/movie_details_bloc.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/trending_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
+import 'package:movie_stack/src/screens/movie_details.dart';
 import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -25,10 +27,17 @@ class Home extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      body: SafeArea(
-        child: ListView(
-          children: <Widget>[trendingCarousel()],
+      appBar: AppBar(
+        title: Text(
+          'MovieStack',
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+          ),
         ),
+        backgroundColor: kPrimaryColor,
+      ),
+      body: ListView(
+        children: <Widget>[trendingCarousel()],
       ),
     );
   }
@@ -54,7 +63,7 @@ class Home extends StatelessWidget {
 
   Widget heading({@required String title}) {
     return Container(
-      padding: EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10.0),
+      padding: EdgeInsets.only(left: 20.0, top: 13.0, bottom: 10.0),
       alignment: Alignment.centerLeft,
       child: Text(
         '$title',
@@ -82,33 +91,42 @@ class Home extends StatelessWidget {
               TrendingModel trendingModel =
                   TrendingModel.fromJson(snapshot.data[index]);
               bool isMovie = trendingModel.media_type == 'movie';
-              return Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: CachedNetworkImage(
-                          imageUrl: '$kImageUrl${trendingModel.backdrop_path}',
-                          placeholder: (context, url) {
-                            return Container(
-                              height: 200.0,
-                              decoration: BoxDecoration(
-                                color: kDarkBlue2,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                            );
-                          },
-                          fit: BoxFit.cover,
+              return GestureDetector(
+                onTap: () {
+                  movieDetailsBloc.fetchMovieDetails(trendingModel.id);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MovieDetails()),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: CachedNetworkImage(
+                            imageUrl: '$kImageUrl${trendingModel.backdrop_path}',
+                            placeholder: (context, url) {
+                              return Container(
+                                height: 200.0,
+                                decoration: BoxDecoration(
+                                  color: kDarkBlue2,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
+                                ),
+                              );
+                            },
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    bottomInfo(isMovie, trendingModel),
-                  ],
+                      bottomInfo(isMovie, trendingModel),
+                    ],
+                  ),
                 ),
               );
             },
@@ -117,7 +135,7 @@ class Home extends StatelessWidget {
             scale: 0.8,
             loop: true,
             autoplay: false,
-            autoplayDelay: 5000,
+            autoplayDelay: 10000,
             curve: Curves.easeInOut,
           );
         },
