@@ -88,16 +88,7 @@ class Home extends StatelessWidget {
               bool isMovie = trendingModel.media_type == 'movie';
               return GestureDetector(
                 onTap: () {
-                  detailsBloc.fetchDetails(
-                      trendingModel.id, isMovie ? 'movie' : 'tv');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DetailsPage(
-                        isMovie: isMovie,
-                      ),
-                    ),
-                  );
+                  openDetailsScreen(context, trendingModel.id, isMovie);
                 },
                 child: Container(
                   decoration: BoxDecoration(
@@ -212,74 +203,93 @@ class Home extends StatelessWidget {
               } else {
                 model = TvModel.fromJson(snapshot.data[index]);
               }
-              return Container(
-                height: 220.0,
-                padding: EdgeInsets.only(left: 15.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5.0),
-                        child: CachedNetworkImage(
-                          imageUrl: '$kImageUrl${model.poster_path}',
-                          placeholder: (context, url) {
-                            return Container(
-                              height: 200.0,
-                              width: 140.0,
-                              decoration: BoxDecoration(
-                                color: kDarkBlue2,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                            );
-                          },
-                          fit: BoxFit.cover,
+              return GestureDetector(
+                onTap: () {
+                  MovieModel movieModel =
+                      MovieModel.fromJson(snapshot.data[index]);
+                  openDetailsScreen(context, movieModel.id, isMovie);
+                },
+                child: Container(
+                  height: 220.0,
+                  padding: EdgeInsets.only(left: 15.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5.0),
+                          child: CachedNetworkImage(
+                            imageUrl: '$kImageUrl${model.poster_path}',
+                            placeholder: (context, url) {
+                              return Container(
+                                height: 200.0,
+                                width: 140.0,
+                                decoration: BoxDecoration(
+                                  color: kDarkBlue2,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)),
+                                ),
+                              );
+                            },
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Container(
-                      width: 120.0,
-                      child: Text(
-                        isMovie ? model.title : model.name,
-                        style: TextStyle(
-                          color: kLightGrey,
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w600,
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Container(
+                        width: 120.0,
+                        child: Text(
+                          isMovie ? model.title : model.name,
+                          style: TextStyle(
+                            color: kLightGrey,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    RatingBar(
-                      initialRating: model.vote_average / 2,
-                      itemSize: 13.0,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: kAccentColor,
+                      SizedBox(
+                        height: 5.0,
                       ),
-                      onRatingUpdate: null,
-                    ),
-                  ],
+                      RatingBar(
+                        initialRating: model.vote_average / 2,
+                        itemSize: 13.0,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: kAccentColor,
+                        ),
+                        onRatingUpdate: null,
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
             itemCount: snapshot.data.length,
           );
         },
+      ),
+    );
+  }
+
+  openDetailsScreen(BuildContext context, int id, bool isMovie) {
+    detailsBloc.fetchDetails(id, isMovie ? 'movie' : 'tv');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailsPage(
+          isMovie: isMovie,
+        ),
       ),
     );
   }

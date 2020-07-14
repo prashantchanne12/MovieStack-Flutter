@@ -46,7 +46,7 @@ class DetailsPage extends StatelessWidget {
         }
         DetailsModel detailsModel = snapshot.data;
         detailsModel.genres.forEach((element) {
-          if (count <= 3) {
+          if (count < 3) {
             children.add(createGenres(element['name']));
           }
           count = count + 1;
