@@ -26,9 +26,9 @@ const kTVPopular =
 const kTVTopRated =
     'https://api.themoviedb.org/3/tv/top_rated?api_key=$kApiKey&language=en-US&page=';
 
-
 const kPrimaryColor = const Color(0xff05070c);
 const kAccentColor = const Color(0xff4B97C5);
+const kBlue = const Color(0xff0984e3);
 const kDarkBlue1 = const Color(0xff314665);
 const kDarkBlue2 = const Color(0xff253250);
 const kLightGrey = const Color(0xffb5b6bf);
