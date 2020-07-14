@@ -4,6 +4,8 @@ import 'package:movie_stack/src/blocs/details_page_bloc.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/cast_model.dart';
+import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
+import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../models/movie_details_model.dart';
 
@@ -101,47 +103,7 @@ class DetailsPage extends StatelessWidget {
         stream: detailsBloc.cast,
         builder: (BuildContext context, AsyncSnapshot<CastModel> snapshot) {
           if (!snapshot.hasData) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  height: 60.0,
-                  width: MediaQuery.of(context).size.width - 40,
-                  decoration: BoxDecoration(
-                    color: kDarkBlue2,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  height: 30.0,
-                  width: MediaQuery.of(context).size.width - 40,
-                  decoration: BoxDecoration(
-                    color: kDarkBlue2,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  height: 20.0,
-                  width: MediaQuery.of(context).size.width - 80,
-                  decoration: BoxDecoration(
-                    color: kDarkBlue2,
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ],
-            );
+            return castLoadingPlaceholder(context: context);
           }
           return ListView.builder(
             padding: EdgeInsets.only(left: 10.0),
@@ -149,59 +111,64 @@ class DetailsPage extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: snapshot.data.cast.length,
             itemBuilder: (BuildContext context, int index) {
-              return Column(
-                children: <Widget>[
-                  Container(
-                    height: 140.0,
-                    width: 120.0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5.0),
-                      child: Image.network(
-                        snapshot.data.cast[index]['profile_path'] != null
-                            ? '$kImageUrl${snapshot.data.cast[index]['profile_path']}'
-                            : kDefaultImage,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.center,
-                        width: 120.0,
-                        child: Text(
-                          '${snapshot.data.cast[index]['name']}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 130.0,
-                        child: Text(
-                          '${snapshot.data.cast[index]['character']}',
-                          style: TextStyle(
-                            color: kLightGrey,
-                            fontSize: 13.0,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              );
+              return createCast(context, index, snapshot);
             },
           );
         },
       ),
+    );
+  }
+
+  Widget createCast(
+      BuildContext context, int index, AsyncSnapshot<CastModel> snapshot) {
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 140.0,
+          width: 120.0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(5.0),
+            child: Image.network(
+              snapshot.data.cast[index]['profile_path'] != null
+                  ? '$kImageUrl${snapshot.data.cast[index]['profile_path']}'
+                  : kDefaultImage,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 5.0,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              width: 120.0,
+              child: Text(
+                '${snapshot.data.cast[index]['name']}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              width: 130.0,
+              child: Text(
+                '${snapshot.data.cast[index]['character']}',
+                style: TextStyle(
+                  color: kLightGrey,
+                  fontSize: 13.0,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
