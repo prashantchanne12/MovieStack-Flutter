@@ -39,9 +39,10 @@ class DetailsPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<DetailsModel> snapshot) {
         if (!snapshot.hasData) {
           return Container(
+            alignment: Alignment.center,
             height: MediaQuery.of(context).size.height * 0.65,
-            width: double.infinity,
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
+            width: MediaQuery.of(context).size.width - 40,
+            margin: EdgeInsets.only(left: 10.0, right: 10.0),
             decoration: BoxDecoration(
               color: kDarkBlue2,
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -67,7 +68,7 @@ class DetailsPage extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                createTitle(model: detailsModel),
+                createTitle(model: detailsModel, context: context),
                 SizedBox(
                   height: 15.0,
                 ),
@@ -100,23 +101,40 @@ class DetailsPage extends StatelessWidget {
         stream: detailsBloc.cast,
         builder: (BuildContext context, AsyncSnapshot<CastModel> snapshot) {
           if (!snapshot.hasData) {
-            return Row(
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
-                  width: 10.0,
+                  height: 10.0,
                 ),
                 Container(
-                  width: 100.0,
+                  alignment: Alignment.centerLeft,
+                  height: 60.0,
+                  width: MediaQuery.of(context).size.width - 40,
                   decoration: BoxDecoration(
                     color: kDarkBlue2,
-                    borderRadius: BorderRadius.circular(5.0),
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
                 ),
                 SizedBox(
-                  width: 10.0,
+                  height: 10.0,
                 ),
                 Container(
-                  width: 200.0,
+                  alignment: Alignment.centerLeft,
+                  height: 30.0,
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    color: kDarkBlue2,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  height: 20.0,
+                  width: MediaQuery.of(context).size.width - 80,
                   decoration: BoxDecoration(
                     color: kDarkBlue2,
                     borderRadius: BorderRadius.circular(10.0),
@@ -203,11 +221,13 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Row createTitle({@required DetailsModel model}) {
+  Row createTitle(
+      {@required DetailsModel model, @required BuildContext context}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Container(
+          width: MediaQuery.of(context).size.width - 150.0,
           padding: EdgeInsets.only(left: 10.0),
           alignment: Alignment.centerLeft,
           child: Text(
@@ -217,6 +237,7 @@ class DetailsPage extends StatelessWidget {
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         Padding(
