@@ -53,17 +53,9 @@ class MovieDetails extends StatelessWidget {
         });
         return Column(
           children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height * 0.65,
-              width: double.infinity,
-              padding: EdgeInsets.only(left: 5.0, right: 5.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.network(
-                  '$kImageUrl${movieDetailsModel.poster_path}',
-                  fit: BoxFit.cover,
-                ),
-              ),
+            createPoster(
+              context: context,
+              movieDetailsModel: movieDetailsModel,
             ),
             SizedBox(
               height: 15.0,
@@ -71,110 +63,144 @@ class MovieDetails extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(left: 10.0),
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${movieDetailsModel.title}',
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 11.0),
-                            alignment: Alignment.centerLeft,
-                            child: CircularPercentIndicator(
-                              radius: 30.0,
-                              lineWidth: 4.0,
-                              animation: true,
-                              percent: movieDetailsModel.vote_average / 10,
-                              circularStrokeCap: CircularStrokeCap.round,
-                              progressColor: kAccentColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8.0,
-                          ),
-                          Text(
-                            '${movieDetailsModel.vote_average * 10} %',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                createTitle(movieDetailsModel: movieDetailsModel),
                 SizedBox(
                   height: 15.0,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          '${movieDetailsModel.release_date}'.substring(0, 4),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Icon(
-                        Icons.graphic_eq,
-                        color: kAccentColor,
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Row(
-                        children: children,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 10.0, top: 15.0),
-                  child: Text(
-                    'The Plot',
-                    style: TextStyle(
-                      color: kAccentColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 10.0, top: 5.0),
-                  child: Text(
-                    '${movieDetailsModel.overview}',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                genresAndRelease(movieDetailsModel: movieDetailsModel),
+                plot(movieDetailsModel: movieDetailsModel)
               ],
             ),
           ],
         );
       },
+    );
+  }
+
+  Container createPoster(
+      {@required BuildContext context,
+      @required MovieDetailsModel movieDetailsModel}) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.65,
+      width: double.infinity,
+      padding: EdgeInsets.only(left: 5.0, right: 5.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10.0),
+        child: Image.network(
+          '$kImageUrl${movieDetailsModel.poster_path}',
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Row createTitle({@required MovieDetailsModel movieDetailsModel}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(left: 10.0),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            '${movieDetailsModel.title}',
+            style: TextStyle(
+              fontSize: 25.0,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(right: 15.0),
+          child: Row(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(left: 11.0),
+                alignment: Alignment.centerLeft,
+                child: CircularPercentIndicator(
+                  radius: 30.0,
+                  lineWidth: 4.0,
+                  animation: true,
+                  percent: movieDetailsModel.vote_average / 10,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  progressColor: kAccentColor,
+                ),
+              ),
+              SizedBox(
+                width: 8.0,
+              ),
+              Text(
+                '${movieDetailsModel.vote_average * 10} %',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget genresAndRelease({@required MovieDetailsModel movieDetailsModel}) {
+    return Padding(
+      padding: EdgeInsets.only(left: 10.0),
+      child: Row(
+        children: <Widget>[
+          Container(
+            child: Text(
+              '${movieDetailsModel.release_date}'.substring(0, 4),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 5.0,
+          ),
+          Icon(
+            Icons.graphic_eq,
+            color: kAccentColor,
+          ),
+          SizedBox(
+            width: 5.0,
+          ),
+          Row(
+            children: children,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Column plot({@required MovieDetailsModel movieDetailsModel}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(left: 10.0, top: 15.0),
+          child: Text(
+            'The Plot',
+            style: TextStyle(
+              color: kAccentColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(left: 10.0, top: 5.0),
+          child: Text(
+            '${movieDetailsModel.overview}',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
