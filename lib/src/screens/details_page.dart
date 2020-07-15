@@ -6,7 +6,6 @@ import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/reviews_model.dart';
 import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
-import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../models/movie_details_model.dart';
 
@@ -181,22 +180,103 @@ class DetailsPage extends StatelessWidget {
   }
 
   reviewsStream(DetailsBloc detailsBloc) {
-    return StreamBuilder(
-      stream: detailsBloc.reviews,
-      builder: (BuildContext context, snapshot) {
-        if (!snapshot.hasData) {
-          return Text('Loading');
-        }
-        ReviewsModel reviewsModel = ReviewsModel.fromJson(snapshot.data[0]);
-        return Container(
+    return Column(
+      children: <Widget>[
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(left: 15.0, top: 10.0),
           child: Text(
-            reviewsModel.content,
+            'Reviews',
             style: TextStyle(
-              color: Colors.white,
+              fontSize: 18.0,
+              color: kAccentColor,
+              fontWeight: FontWeight.bold,
             ),
           ),
-        );
-      },
+        ),
+        StreamBuilder(
+          stream: detailsBloc.reviews,
+          builder: (BuildContext context, snapshot) {
+            if (!snapshot.hasData) {
+              return Text('Loading');
+            }
+
+            if (snapshot.data.length == 0) {
+              return Container(
+                alignment: Alignment.centerLeft,
+                padding: EdgeInsets.only(left: 15.0, top: 5.0),
+                child: Text(
+                  'No Reviews Available',
+                  style: TextStyle(
+                    color: kLightGrey,
+                  ),
+                ),
+              );
+            }
+
+            ReviewsModel reviewsModel = ReviewsModel.fromJson(snapshot.data[0]);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: kDarkBlue1.withOpacity(0.2),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    border: Border.all(
+                      color: kDarkBlue1,
+                    )),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(left: 15.0, top: 10.0),
+                      child: Text(
+                        reviewsModel.author,
+                        style: TextStyle(
+                          color: kAccentColor,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 15.0, top: 10.0),
+                      child: Text(
+                        reviewsModel.content.length < 350
+                            ? reviewsModel.content.length
+                            : reviewsModel.content.substring(0, 350) + '...',
+                        style: TextStyle(
+                          color: Colors.white,
+                          height: 1.3,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 15.0),
+                      child: Container(
+                        padding: EdgeInsets.all(8.0),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(color: kDarkBlue1),
+                          ),
+                        ),
+                        child: Text(
+                          'All Reviews',
+                          style: TextStyle(
+                            color: kAccentColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17.0,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 
