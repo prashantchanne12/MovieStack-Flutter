@@ -10,6 +10,7 @@ class DetailsBloc {
   final _details = PublishSubject<DetailsModel>();
   final _cast = PublishSubject<CastModel>();
   final _reviews = PublishSubject<List<dynamic>>();
+  final _similar = PublishSubject<List<dynamic>>();
   final _moviesApiProvider = MoviesApiProvider();
 
   // Add data to Stream
@@ -30,14 +31,21 @@ class DetailsBloc {
     _reviews.sink.add(reviewsList);
   }
 
+  fetchSimilar(int id, String tvOrMovie) async {
+    final similarList = await _moviesApiProvider.fetchSimilar(id, tvOrMovie);
+    _similar.sink.add(similarList);
+  }
+
   // Retrieve data from Stream
   Stream<DetailsModel> get details => _details.stream;
   Stream<CastModel> get cast => _cast.stream;
   Stream<List<dynamic>> get reviews => _reviews.stream;
+  Stream<List<dynamic>> get similar => _similar.stream;
 
   dispose() {
     _details.close();
     _cast.close();
     _reviews.close();
+    _similar.close();
   }
 }

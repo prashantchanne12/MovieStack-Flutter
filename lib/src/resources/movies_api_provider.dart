@@ -43,4 +43,11 @@ class MoviesApiProvider {
     final jsonBody = json.decode(response.body);
     return jsonBody['results'];
   }
+
+  Future<List<dynamic>> fetchSimilar(int id, String tvOrMovie) async{
+    final response = await get('https://api.themoviedb.org/3/$tvOrMovie/$id/recommendations?api_key=$kApiKey&language=en-US&page=1');
+    final jsonBody = json.decode(response.body);
+    return jsonBody['results'];
+  }
+
 }

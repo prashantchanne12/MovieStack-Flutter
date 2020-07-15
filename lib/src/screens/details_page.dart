@@ -5,6 +5,7 @@ import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/reviews_model.dart';
+import 'package:movie_stack/src/models/similar_content.dart';
 import 'package:movie_stack/src/screens/reviews.dart';
 import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -30,6 +31,7 @@ class DetailsPage extends StatelessWidget {
               headerStream(detailsBloc),
               castStream(detailsBloc),
               reviewsStream(detailsBloc),
+              similarStream(detailsBloc),
             ],
           ),
         ),
@@ -77,16 +79,7 @@ class DetailsPage extends StatelessWidget {
                   height: 15.0,
                 ),
                 genresAndRelease(model: detailsModel),
-                Container(
-                  padding: EdgeInsets.only(left: 15.0, top: 10.0),
-                  child: Text(
-                    '${isMovie ? detailsModel.runtime : detailsModel.episode_run_time[0]}' +
-                        ' mins',
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
+                runtime(detailsModel: detailsModel),
                 plot(model: detailsModel),
               ],
             ),
@@ -302,6 +295,23 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
+  Widget similarStream(DetailsBloc detailsBloc) {
+    return StreamBuilder(
+      stream: detailsBloc.similar,
+      builder: (BuildContext context, snapshot) {
+        if (!snapshot.hasData) {
+          return Text('Loading...');
+        }
+        SimilarContentModel similarContentModel =
+            SimilarContentModel.fromJson(snapshot.data[0]);
+        return Text(
+          similarContentModel.title,
+          style: TextStyle(color: Colors.white),
+        );
+      },
+    );
+  }
+
   Container createPoster(
       {@required BuildContext context, @required DetailsModel model}) {
     return Container(
@@ -393,6 +403,19 @@ class DetailsPage extends StatelessWidget {
             children: children,
           ),
         ],
+      ),
+    );
+  }
+
+  Container runtime({DetailsModel detailsModel}) {
+    return Container(
+      padding: EdgeInsets.only(left: 15.0, top: 10.0),
+      child: Text(
+        '${isMovie ? detailsModel.runtime : detailsModel.episode_run_time[0]}' +
+            ' mins',
+        style: TextStyle(
+          color: Colors.grey,
+        ),
       ),
     );
   }
