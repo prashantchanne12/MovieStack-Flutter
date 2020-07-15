@@ -294,6 +294,7 @@ class Home extends StatelessWidget {
       BuildContext context, int id, bool isMovie, DetailsBloc detailsBloc) {
     detailsBloc.fetchDetails(id, isMovie ? 'movie' : 'tv');
     detailsBloc.fetchCast(id, isMovie ? 'movie' : 'tv');
+    detailsBloc.fetchReviews(id);
     Navigator.push(
       context,
       MaterialPageRoute(

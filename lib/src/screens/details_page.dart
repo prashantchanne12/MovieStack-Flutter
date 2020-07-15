@@ -4,6 +4,7 @@ import 'package:movie_stack/src/blocs/details_page_bloc.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/cast_model.dart';
+import 'package:movie_stack/src/models/reviews_model.dart';
 import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
 import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -19,15 +20,16 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final detailsBloc = DetailsPageProvider.of(context);
     children = <Widget>[];
-    count = 0;
+    count = 1;
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
             children: <Widget>[
-              stream(detailsBloc),
+              headerStream(detailsBloc),
               castStream(detailsBloc),
+              reviewsStream(detailsBloc),
             ],
           ),
         ),
@@ -35,7 +37,7 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  stream(DetailsBloc detailsBloc) {
+  headerStream(DetailsBloc detailsBloc) {
     return StreamBuilder(
       stream: detailsBloc.details,
       builder: (BuildContext context, AsyncSnapshot<DetailsModel> snapshot) {
@@ -44,7 +46,7 @@ class DetailsPage extends StatelessWidget {
             alignment: Alignment.center,
             height: MediaQuery.of(context).size.height * 0.65,
             width: MediaQuery.of(context).size.width - 40,
-            margin: EdgeInsets.only(left: 10.0, right: 10.0),
+            margin: EdgeInsets.only(left: 15.0, right: 10.0),
             decoration: BoxDecoration(
               color: kDarkBlue2,
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -76,17 +78,6 @@ class DetailsPage extends StatelessWidget {
                 ),
                 genresAndRelease(model: detailsModel),
                 plot(model: detailsModel),
-                Container(
-                  padding: EdgeInsets.only(left: 10.0, top: 10.0),
-                  child: Text(
-                    'Cast',
-                    style: TextStyle(
-                      color: kAccentColor,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
               ],
             ),
           ],
@@ -96,26 +87,43 @@ class DetailsPage extends StatelessWidget {
   }
 
   castStream(DetailsBloc detailsBloc) {
-    return Container(
-      margin: EdgeInsets.only(left: 5.0, top: 5.0),
-      height: 200.0,
-      child: StreamBuilder(
-        stream: detailsBloc.cast,
-        builder: (BuildContext context, AsyncSnapshot<CastModel> snapshot) {
-          if (!snapshot.hasData) {
-            return castLoadingPlaceholder(context: context);
-          }
-          return ListView.builder(
-            padding: EdgeInsets.only(left: 10.0),
-            physics: BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            itemCount: snapshot.data.cast.length,
-            itemBuilder: (BuildContext context, int index) {
-              return createCast(context, index, snapshot);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          alignment: Alignment.centerLeft,
+          padding: EdgeInsets.only(left: 15.0, top: 20.0),
+          child: Text(
+            'Cast',
+            style: TextStyle(
+              color: kAccentColor,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(left: 5.0, top: 10.0),
+          height: 200.0,
+          child: StreamBuilder(
+            stream: detailsBloc.cast,
+            builder: (BuildContext context, AsyncSnapshot<CastModel> snapshot) {
+              if (!snapshot.hasData) {
+                return castLoadingPlaceholder(context: context);
+              }
+              return ListView.builder(
+                padding: EdgeInsets.only(left: 10.0),
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.cast.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return createCast(context, index, snapshot);
+                },
+              );
             },
-          );
-        },
-      ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -172,6 +180,26 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
+  reviewsStream(DetailsBloc detailsBloc) {
+    return StreamBuilder(
+      stream: detailsBloc.reviews,
+      builder: (BuildContext context, snapshot) {
+        if (!snapshot.hasData) {
+          return Text('Loading');
+        }
+        ReviewsModel reviewsModel = ReviewsModel.fromJson(snapshot.data[0]);
+        return Container(
+          child: Text(
+            reviewsModel.content,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   Container createPoster(
       {@required BuildContext context, @required DetailsModel model}) {
     return Container(
@@ -195,7 +223,7 @@ class DetailsPage extends StatelessWidget {
       children: <Widget>[
         Container(
           width: MediaQuery.of(context).size.width - 150.0,
-          padding: EdgeInsets.only(left: 10.0),
+          padding: EdgeInsets.only(left: 15.0),
           alignment: Alignment.centerLeft,
           child: Text(
             '${isMovie ? model.title : model.name}',
@@ -243,7 +271,7 @@ class DetailsPage extends StatelessWidget {
 
   Widget genresAndRelease({@required DetailsModel model}) {
     return Padding(
-      padding: EdgeInsets.only(left: 10.0),
+      padding: EdgeInsets.only(left: 15.0),
       child: Row(
         children: <Widget>[
           Container(
@@ -279,7 +307,7 @@ class DetailsPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          padding: EdgeInsets.only(left: 10.0, top: 15.0),
+          padding: EdgeInsets.only(left: 15.0, top: 20.0),
           child: Text(
             'The Plot',
             style: TextStyle(
@@ -290,11 +318,12 @@ class DetailsPage extends StatelessWidget {
           ),
         ),
         Container(
-          padding: EdgeInsets.only(left: 10.0, top: 5.0),
+          padding: EdgeInsets.only(left: 15.0, top: 5.0),
           child: Text(
             '${model.overview}',
             style: TextStyle(
-              color: Colors.white,
+              color: const Color(0xffF5F5F5),
+              height: 1.3,
             ),
           ),
         ),
