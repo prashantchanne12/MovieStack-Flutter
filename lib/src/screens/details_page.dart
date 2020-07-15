@@ -1,14 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_stack/src/blocs/details_page_bloc.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/reviews_model.dart';
 import 'package:movie_stack/src/models/similar_content.dart';
-import 'package:movie_stack/src/screens/home.dart';
 import 'package:movie_stack/src/screens/reviews.dart';
 import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -35,6 +33,7 @@ class DetailsPage extends StatelessWidget {
               castStream(detailsBloc),
               reviewsStream(detailsBloc),
               similarStream(context, detailsBloc),
+              moreDetails(detailsBloc),
             ],
           ),
         ),
@@ -399,6 +398,138 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
+  Widget moreDetails(DetailsBloc detailsBloc) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(left: 15.0, top: 20.0, bottom: 5.0),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Details',
+            style: TextStyle(
+              color: kAccentColor,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        StreamBuilder(
+          stream: detailsBloc.details,
+          builder:
+              (BuildContext context, AsyncSnapshot<DetailsModel> snapshot) {
+            DetailsModel detailsModel = snapshot.data;
+            if (!snapshot.hasData) {
+              return Text(
+                'Loading...',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              );
+            }
+            return Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(15.0),
+                decoration: BoxDecoration(
+                  color: kDarkBlue1.withOpacity(0.2),
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                  border: Border.all(
+                    color: kDarkBlue1,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Release Date',
+                      style: TextStyle(
+                        color: kAccentColor,
+                      ),
+                    ),
+                    Text(
+                      isMovie
+                          ? detailsModel.release_date
+                          : detailsModel.first_air_date,
+                      style: TextStyle(
+                        color: kLightGrey,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Text(
+                      'Original Language',
+                      style: TextStyle(
+                        color: kAccentColor,
+                      ),
+                    ),
+                    Text(
+                      detailsModel.original_language,
+                      style: TextStyle(
+                        color: kLightGrey,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Text(
+                      'Votes',
+                      style: TextStyle(
+                        color: kAccentColor,
+                      ),
+                    ),
+                    Text(
+                      '${detailsModel.vote_average} / 10',
+                      style: TextStyle(
+                        color: kLightGrey,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Text(
+                      isMovie ? 'Budget' : 'Seasons',
+                      style: TextStyle(
+                        color: kAccentColor,
+                      ),
+                    ),
+                    Text(
+                      isMovie
+                          ? '\$ ${detailsModel.budget == 0 ? 'N/A' : detailsModel.budget}'
+                          : '${detailsModel.number_of_seasons}',
+                      style: TextStyle(
+                        color: kLightGrey,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20.0,
+                    ),
+                    Text(
+                      isMovie ? 'Revenue' : 'Episodes',
+                      style: TextStyle(
+                        color: kAccentColor,
+                      ),
+                    ),
+                    Text(
+                      isMovie
+                          ? '\$ ${detailsModel.revenue == 0 ? 'N/A' : detailsModel.revenue}'
+                          : '${detailsModel.number_of_episodes}',
+                      style: TextStyle(
+                        color: kLightGrey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  }
+
   Container createPoster(
       {@required BuildContext context, @required DetailsModel model}) {
     return Container(
@@ -561,7 +692,7 @@ class DetailsPage extends StatelessWidget {
     detailsBloc.fetchCast(id, isMovie ? 'movie' : 'tv');
     detailsBloc.fetchReviews(id);
     detailsBloc.fetchSimilar(id, isMovie ? 'movie' : 'tv');
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (context) => DetailsPage(

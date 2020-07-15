@@ -18,6 +18,7 @@ class DetailsModel {
   String first_air_date;
   String last_air_date;
   String name;
+  String original_language;
   int number_of_episodes;
   int number_of_seasons;
   List<dynamic> origin_country;
@@ -42,13 +43,14 @@ class DetailsModel {
     vote_average = parsedJson['vote_average'];
     vote_count = parsedJson['vote_count'];
     first_air_date = parsedJson['first_air_date'];
-    last_air_date = parsedJson['last_air_date'];
+    last_air_date = parsedJson['last_air_date'] ?? 'not available';
     name = parsedJson['name'];
-    number_of_episodes = parsedJson['number_of_episodes'];
-    number_of_seasons = parsedJson['number_of_seasons'];
+    number_of_episodes = parsedJson['number_of_episodes'] ?? 0;
+    number_of_seasons = parsedJson['number_of_seasons'] ?? 0;
     origin_country = parsedJson['origin_country'];
     runtime = parsedJson['runtime'];
     seasons = parsedJson['seasons'];
     episode_run_time = parsedJson['episode_run_time'];
+    original_language = parsedJson['original_language'];
   }
 }
