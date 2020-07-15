@@ -1,11 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:movie_stack/src/blocs/details_page_bloc.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/reviews_model.dart';
 import 'package:movie_stack/src/models/similar_content.dart';
+import 'package:movie_stack/src/screens/home.dart';
 import 'package:movie_stack/src/screens/reviews.dart';
 import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -31,7 +34,7 @@ class DetailsPage extends StatelessWidget {
               headerStream(detailsBloc),
               castStream(detailsBloc),
               reviewsStream(detailsBloc),
-              similarStream(detailsBloc),
+              similarStream(context, detailsBloc),
             ],
           ),
         ),
@@ -295,20 +298,104 @@ class DetailsPage extends StatelessWidget {
     );
   }
 
-  Widget similarStream(DetailsBloc detailsBloc) {
-    return StreamBuilder(
-      stream: detailsBloc.similar,
-      builder: (BuildContext context, snapshot) {
-        if (!snapshot.hasData) {
-          return Text('Loading...');
-        }
-        SimilarContentModel similarContentModel =
-            SimilarContentModel.fromJson(snapshot.data[0]);
-        return Text(
-          similarContentModel.title,
-          style: TextStyle(color: Colors.white),
-        );
-      },
+  Widget similarStream(BuildContext context, DetailsBloc detailsBloc) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(left: 15.0, top: 20.0, bottom: 10.0),
+          child: Text(
+            'More Like This',
+            style: TextStyle(
+              color: kAccentColor,
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(
+            left: 5.0,
+          ),
+          height: 220.0,
+          child: StreamBuilder(
+            stream: detailsBloc.similar,
+            builder: (BuildContext context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text(
+                  'Loading...',
+                  style: TextStyle(color: Colors.white),
+                );
+              }
+              return ListView.builder(
+                physics: BouncingScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  SimilarContentModel similarContentModel =
+                      SimilarContentModel.fromJson(snapshot.data[index]);
+                  return GestureDetector(
+                    onTap: () {
+                      openDetailsScreen(context, similarContentModel.id,
+                          isMovie, detailsBloc);
+                    },
+                    child: Container(
+                      height: 200.0,
+                      padding: EdgeInsets.only(left: 15.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(5.0),
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    '$kImageUrl${similarContentModel.poster_path}',
+                                placeholder: (context, url) {
+                                  return Container(
+                                    height: 200.0,
+                                    width: 140.0,
+                                    decoration: BoxDecoration(
+                                      color: kDarkBlue2,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                    ),
+                                  );
+                                },
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          Container(
+                            width: 120.0,
+                            child: Text(
+                              isMovie
+                                  ? similarContentModel.title
+                                  : similarContentModel.name,
+                              style: TextStyle(
+                                color: kLightGrey,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -463,6 +550,22 @@ class DetailsPage extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
           ),
+        ),
+      ),
+    );
+  }
+
+  openDetailsScreen(
+      BuildContext context, int id, bool isMovie, DetailsBloc detailsBloc) {
+    detailsBloc.fetchDetails(id, isMovie ? 'movie' : 'tv');
+    detailsBloc.fetchCast(id, isMovie ? 'movie' : 'tv');
+    detailsBloc.fetchReviews(id);
+    detailsBloc.fetchSimilar(id, isMovie ? 'movie' : 'tv');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailsPage(
+          isMovie: isMovie,
         ),
       ),
     );
