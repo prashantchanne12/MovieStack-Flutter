@@ -77,6 +77,16 @@ class DetailsPage extends StatelessWidget {
                   height: 15.0,
                 ),
                 genresAndRelease(model: detailsModel),
+                Container(
+                  padding: EdgeInsets.only(left: 15.0, top: 10.0),
+                  child: Text(
+                    '${isMovie ? detailsModel.runtime : detailsModel.episode_run_time[0]}' +
+                        ' mins',
+                    style: TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
                 plot(model: detailsModel),
               ],
             ),
@@ -377,14 +387,7 @@ class DetailsPage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: 5.0,
-          ),
-          Icon(
-            Icons.graphic_eq,
-            color: kAccentColor,
-          ),
-          SizedBox(
-            width: 5.0,
+            width: 15.0,
           ),
           Row(
             children: children,
@@ -425,7 +428,7 @@ class DetailsPage extends StatelessWidget {
 
   Widget createGenres(String text) {
     return Container(
-      margin: EdgeInsets.only(right: 5.0),
+      margin: EdgeInsets.only(right: 10.0),
       decoration: BoxDecoration(
         border: Border.all(color: kAccentColor, width: 1.0),
         borderRadius: BorderRadius.circular(1.0),

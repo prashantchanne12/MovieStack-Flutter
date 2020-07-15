@@ -14,6 +14,7 @@ class DetailsModel {
   String title;
   double vote_average;
   int vote_count;
+  int runtime;
   String first_air_date;
   String last_air_date;
   String name;
@@ -21,6 +22,7 @@ class DetailsModel {
   int number_of_seasons;
   List<dynamic> origin_country;
   List<dynamic> seasons;
+  List<dynamic> episode_run_time;
 
   // Named constructor
   DetailsModel.fromJson(Map<String, dynamic> parsedJson) {
@@ -45,6 +47,8 @@ class DetailsModel {
     number_of_episodes = parsedJson['number_of_episodes'];
     number_of_seasons = parsedJson['number_of_seasons'];
     origin_country = parsedJson['origin_country'];
+    runtime = parsedJson['runtime'];
     seasons = parsedJson['seasons'];
+    episode_run_time = parsedJson['episode_run_time'];
   }
 }
