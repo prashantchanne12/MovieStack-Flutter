@@ -313,10 +313,10 @@ class DetailsPage extends StatelessWidget {
           ),
         ),
         Container(
+          alignment: Alignment.centerLeft,
           margin: EdgeInsets.only(
             left: 5.0,
           ),
-          height: 220.0,
           child: StreamBuilder(
             stream: detailsBloc.similar,
             builder: (BuildContext context, snapshot) {
@@ -326,70 +326,84 @@ class DetailsPage extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 );
               }
-              return ListView.builder(
-                physics: BouncingScrollPhysics(),
-                scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  SimilarContentModel similarContentModel =
-                      SimilarContentModel.fromJson(snapshot.data[index]);
-                  return GestureDetector(
-                    onTap: () {
-                      openDetailsScreen(context, similarContentModel.id,
-                          isMovie, detailsBloc);
-                    },
-                    child: Container(
-                      height: 200.0,
-                      padding: EdgeInsets.only(left: 15.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5.0),
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    '$kImageUrl${similarContentModel.poster_path}',
-                                placeholder: (context, url) {
-                                  return Container(
-                                    height: 200.0,
-                                    width: 140.0,
-                                    decoration: BoxDecoration(
-                                      color: kDarkBlue2,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0)),
-                                    ),
-                                  );
-                                },
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          Container(
-                            width: 120.0,
-                            child: Text(
-                              isMovie
-                                  ? similarContentModel.title
-                                  : similarContentModel.name,
-                              style: TextStyle(
-                                color: kLightGrey,
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
+              if (snapshot.data.length == 0) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Text(
+                    'N/A',
+                    style: TextStyle(
+                      color: kLightGrey,
                     ),
-                  );
-                },
+                  ),
+                );
+              }
+              return Container(
+                height: 250.0,
+                child: ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    SimilarContentModel similarContentModel =
+                        SimilarContentModel.fromJson(snapshot.data[index]);
+                    return GestureDetector(
+                      onTap: () {
+                        openDetailsScreen(context, similarContentModel.id,
+                            isMovie, detailsBloc);
+                      },
+                      child: Container(
+                        height: 200.0,
+                        padding: EdgeInsets.only(left: 15.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(5.0),
+                                child: CachedNetworkImage(
+                                  imageUrl:
+                                      '$kImageUrl${similarContentModel.poster_path}',
+                                  placeholder: (context, url) {
+                                    return Container(
+                                      height: 200.0,
+                                      width: 140.0,
+                                      decoration: BoxDecoration(
+                                        color: kDarkBlue2,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                      ),
+                                    );
+                                  },
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 5.0,
+                            ),
+                            Container(
+                              width: 120.0,
+                              child: Text(
+                                isMovie
+                                    ? similarContentModel.title
+                                    : similarContentModel.name,
+                                style: TextStyle(
+                                  color: kLightGrey,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
               );
             },
           ),
