@@ -5,6 +5,7 @@ import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/reviews_model.dart';
+import 'package:movie_stack/src/screens/reviews.dart';
 import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../models/movie_details_model.dart';
@@ -251,22 +252,33 @@ class DetailsPage extends StatelessWidget {
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15.0),
-                      child: Container(
-                        padding: EdgeInsets.all(8.0),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(color: kDarkBlue1),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Reviews(
+                                      data: snapshot.data,
+                                    )),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(8.0),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top: BorderSide(color: kDarkBlue1),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'All Reviews',
-                          style: TextStyle(
-                            color: kAccentColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17.0,
+                          child: Text(
+                            'All Reviews',
+                            style: TextStyle(
+                              color: kAccentColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17.0,
+                            ),
+                            textAlign: TextAlign.center,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
