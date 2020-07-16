@@ -72,19 +72,25 @@ Widget detailsHeaderPlaceholder(BuildContext context) {
         height: 20.0,
       ),
       Container(
-        margin: EdgeInsets.only(left: 15.0, right: 10.0),
+        margin: EdgeInsets.only(left: 5.0, right: 10.0),
         width: 250.0,
         height: 50.0,
-        color: kDarkBlue2,
+        decoration: BoxDecoration(
+          color: kDarkBlue2,
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
       ),
       SizedBox(
         height: 15.0,
       ),
       Container(
-        margin: EdgeInsets.only(left: 15.0, right: 10.0),
+        margin: EdgeInsets.only(left: 5.0, right: 10.0),
         width: 200.0,
         height: 30.0,
-        color: kDarkBlue2,
+        decoration: BoxDecoration(
+          color: kDarkBlue2,
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
       ),
       SizedBox(
         height: 200.0,
