@@ -27,6 +27,7 @@ const kTVTopRated =
     'https://api.themoviedb.org/3/tv/top_rated?api_key=$kApiKey&language=en-US&page=';
 const kDefaultImage =
     'https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg';
+const kImageBlueUrl = 'https://www.beautycolorcode.com/253250-2880x1800.png';
 
 const kPrimaryColor = const Color(0xff05070c);
 const kAccentColor = const Color(0xff4B97C5);
