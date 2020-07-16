@@ -8,7 +8,6 @@ import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/reviews_model.dart';
 import 'package:movie_stack/src/models/similar_content.dart';
 import 'package:movie_stack/src/screens/reviews.dart';
-import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../models/movie_details_model.dart';
 
@@ -46,16 +45,17 @@ class DetailsPage extends StatelessWidget {
       stream: detailsBloc.details,
       builder: (BuildContext context, AsyncSnapshot<DetailsModel> snapshot) {
         if (!snapshot.hasData) {
-          return Container(
-            alignment: Alignment.center,
-            height: MediaQuery.of(context).size.height * 0.65,
-            width: MediaQuery.of(context).size.width - 40,
-            margin: EdgeInsets.only(left: 15.0, right: 10.0),
-            decoration: BoxDecoration(
-              color: kDarkBlue2,
-              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            ),
-          );
+          return Text('Loading...');
+//          return Container(
+//            alignment: Alignment.center,
+//            height: MediaQuery.of(context).size.height * 0.65,
+//            width: MediaQuery.of(context).size.width - 40,
+//            margin: EdgeInsets.only(left: 15.0, right: 10.0),
+//            decoration: BoxDecoration(
+//              color: kDarkBlue2,
+//              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+//            ),
+//          );
         }
         DetailsModel detailsModel = snapshot.data;
         detailsModel.genres.forEach((element) {
@@ -114,7 +114,7 @@ class DetailsPage extends StatelessWidget {
             stream: detailsBloc.cast,
             builder: (BuildContext context, AsyncSnapshot<CastModel> snapshot) {
               if (!snapshot.hasData) {
-                return castLoadingPlaceholder(context: context);
+                return Text('Loading...');
               }
               return ListView.builder(
                 padding: EdgeInsets.only(left: 10.0),
@@ -442,7 +442,8 @@ class DetailsPage extends StatelessWidget {
               );
             }
             return Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.only(
+                  left: 8.0, right: 8.0, bottom: 10.0, top: 10.0),
               child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(15.0),
@@ -551,12 +552,12 @@ class DetailsPage extends StatelessWidget {
       width: double.infinity,
       padding: EdgeInsets.only(left: 5.0, right: 5.0),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Image.network(
-          '$kImageUrl${model.poster_path}',
-          fit: BoxFit.cover,
-        ),
-      ),
+          borderRadius: BorderRadius.circular(10.0),
+          child: FadeInImage.assetNetwork(
+            placeholder: 'assets/images/img.png',
+            image: '$kImageUrl${model.poster_path}',
+            fit: BoxFit.cover,
+          )),
     );
   }
 
