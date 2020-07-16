@@ -643,7 +643,7 @@ class DetailsPage extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: 15.0, top: 10.0),
       child: Text(
-        '${isMovie ? detailsModel.runtime : detailsModel.episode_run_time[0]}' +
+        '${isMovie ? detailsModel.runtime : detailsModel.episode_run_time.isNotEmpty ? detailsModel.episode_run_time[0] : 'N/A'}' +
             ' mins',
         style: TextStyle(
           color: Colors.grey,

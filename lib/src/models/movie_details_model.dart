@@ -50,7 +50,7 @@ class DetailsModel {
     origin_country = parsedJson['origin_country'];
     runtime = parsedJson['runtime'];
     seasons = parsedJson['seasons'];
-    episode_run_time = parsedJson['episode_run_time'];
+    episode_run_time = parsedJson['episode_run_time'] ?? ['N/A'];
     original_language = parsedJson['original_language'];
   }
 }

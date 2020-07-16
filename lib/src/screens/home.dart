@@ -13,6 +13,7 @@ import 'package:movie_stack/src/models/trending_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:movie_stack/src/screens/details_page.dart';
+import 'package:movie_stack/src/screens/search.dart';
 import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -34,6 +35,22 @@ class Home extends StatelessWidget {
           ),
         ),
         backgroundColor: kPrimaryColor,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              icon: Icon(
+                Icons.search,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Search()),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       body: ListView(
         children: <Widget>[trendingCarousel(bloc, detailsBloc)],

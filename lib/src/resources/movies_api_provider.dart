@@ -50,4 +50,10 @@ class MoviesApiProvider {
     return jsonBody['results'];
   }
 
+  Future<List<dynamic>> fetchSearchResults(String query) async{
+    final response = await get('https://api.themoviedb.org/3/search/multi?api_key=$kApiKey&language=en-US&query=$query&page=1&include_adult=false');
+    final jsonBody = json.decode(response.body);
+    return jsonBody['results'];
+  }
+
 }
