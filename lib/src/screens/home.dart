@@ -15,6 +15,7 @@ import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:movie_stack/src/screens/details_page.dart';
 import 'package:movie_stack/src/screens/search.dart';
 import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
+import 'package:movie_stack/src/widgets/trending_movies_carousel_loader.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 MoviesApiProvider moviesApiProvider = MoviesApiProvider();
@@ -216,7 +217,7 @@ class Home extends StatelessWidget {
         stream: stream,
         builder: (BuildContext context, snapshot) {
           if (!snapshot.hasData) {
-            return loadingPlaceholder(context);
+            return moviesCarouselLodingPlaceholder();
           }
           return ListView.builder(
             physics: BouncingScrollPhysics(),

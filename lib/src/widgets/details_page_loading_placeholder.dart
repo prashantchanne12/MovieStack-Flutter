@@ -54,3 +54,41 @@ Container castLoadingPlaceholder({@required BuildContext context}) {
     ),
   );
 }
+
+Widget detailsHeaderPlaceholder(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Container(
+        alignment: Alignment.center,
+        height: MediaQuery.of(context).size.height * 0.65,
+        width: MediaQuery.of(context).size.width - 10,
+        decoration: BoxDecoration(
+          color: kDarkBlue2,
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
+      ),
+      SizedBox(
+        height: 20.0,
+      ),
+      Container(
+        margin: EdgeInsets.only(left: 15.0, right: 10.0),
+        width: 250.0,
+        height: 50.0,
+        color: kDarkBlue2,
+      ),
+      SizedBox(
+        height: 15.0,
+      ),
+      Container(
+        margin: EdgeInsets.only(left: 15.0, right: 10.0),
+        width: 200.0,
+        height: 30.0,
+        color: kDarkBlue2,
+      ),
+      SizedBox(
+        height: 200.0,
+      ),
+    ],
+  );
+}

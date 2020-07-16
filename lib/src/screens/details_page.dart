@@ -8,6 +8,7 @@ import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/reviews_model.dart';
 import 'package:movie_stack/src/models/similar_content.dart';
 import 'package:movie_stack/src/screens/reviews.dart';
+import 'package:movie_stack/src/widgets/details_page_loading_placeholder.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import '../models/movie_details_model.dart';
 
@@ -45,17 +46,7 @@ class DetailsPage extends StatelessWidget {
       stream: detailsBloc.details,
       builder: (BuildContext context, AsyncSnapshot<DetailsModel> snapshot) {
         if (!snapshot.hasData) {
-          return Text('Loading...');
-//          return Container(
-//            alignment: Alignment.center,
-//            height: MediaQuery.of(context).size.height * 0.65,
-//            width: MediaQuery.of(context).size.width - 40,
-//            margin: EdgeInsets.only(left: 15.0, right: 10.0),
-//            decoration: BoxDecoration(
-//              color: kDarkBlue2,
-//              borderRadius: BorderRadius.all(Radius.circular(10.0)),
-//            ),
-//          );
+          return detailsHeaderPlaceholder(context);
         }
         DetailsModel detailsModel = snapshot.data;
         detailsModel.genres.forEach((element) {
@@ -114,7 +105,9 @@ class DetailsPage extends StatelessWidget {
             stream: detailsBloc.cast,
             builder: (BuildContext context, AsyncSnapshot<CastModel> snapshot) {
               if (!snapshot.hasData) {
-                return Text('Loading...');
+                return Container(
+                  height: 40.0,
+                );
               }
               return ListView.builder(
                 padding: EdgeInsets.only(left: 10.0),
@@ -204,7 +197,9 @@ class DetailsPage extends StatelessWidget {
           stream: detailsBloc.reviews,
           builder: (BuildContext context, snapshot) {
             if (!snapshot.hasData) {
-              return Text('Loading');
+              return Container(
+                height: 40.0,
+              );
             }
 
             if (snapshot.data.length == 0) {
@@ -321,9 +316,8 @@ class DetailsPage extends StatelessWidget {
             stream: detailsBloc.similar,
             builder: (BuildContext context, snapshot) {
               if (!snapshot.hasData) {
-                return Text(
-                  'Loading...',
-                  style: TextStyle(color: Colors.white),
+                return Container(
+                  height: 40.0,
                 );
               }
               if (snapshot.data.length == 0) {
@@ -436,9 +430,6 @@ class DetailsPage extends StatelessWidget {
             if (!snapshot.hasData) {
               return Text(
                 'Loading...',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
               );
             }
             return Padding(
