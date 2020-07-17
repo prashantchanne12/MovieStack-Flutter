@@ -35,7 +35,7 @@ class Search extends StatelessWidget {
         controller: searchController,
         decoration: InputDecoration(
           filled: true,
-          hintText: 'Search Movie / Tv',
+          hintText: 'Search Movie / TV',
           hintStyle: TextStyle(
             color: kLightGrey,
           ),
@@ -138,7 +138,7 @@ class Search extends StatelessWidget {
                 child: Text(
                   isMovie
                       ? '${snapshot.data[index]['title'].toString().length < 15 ? snapshot.data[index]['title'] : snapshot.data[index]['title'].toString().substring(0, 15) + '..'}'
-                      : '${snapshot.data[index]['name']}',
+                      : '${snapshot.data[index]['name'].toString().length < 15 ? snapshot.data[index]['name'] : snapshot.data[index]['name'].toString().substring(0, 15) + '..'}',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18.0,

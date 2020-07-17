@@ -13,7 +13,9 @@ import 'package:movie_stack/src/models/trending_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:movie_stack/src/screens/details_page.dart';
+import 'package:movie_stack/src/screens/movies.dart';
 import 'package:movie_stack/src/screens/search.dart';
+import 'package:movie_stack/src/screens/tvs.dart';
 import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:movie_stack/src/widgets/trending_movies_carousel_loader.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -26,35 +28,69 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = HomeProvider.of(context);
     final detailsBloc = DetailsPageProvider.of(context);
-    return Scaffold(
-      backgroundColor: kPrimaryColor,
-      appBar: AppBar(
-        title: Text(
-          'MovieStack',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        backgroundColor: kPrimaryColor,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: AppBar(
+            title: Text(
+              'MovieStack',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            bottom: TabBar(
+              tabs: <Widget>[
+                Tab(
+                  child: Text(
+                    'Trending',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'Movies',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                Tab(
+                  child: Text(
+                    'TV',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: kPrimaryColor,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.search,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Search()),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
-        backgroundColor: kPrimaryColor,
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: IconButton(
-              icon: Icon(
-                Icons.search,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Search()),
-                );
-              },
+        body: TabBarView(
+          children: <Widget>[
+            ListView(
+              children: <Widget>[trendingCarousel(bloc, detailsBloc)],
             ),
-          ),
-        ],
-      ),
-      body: ListView(
-        children: <Widget>[trendingCarousel(bloc, detailsBloc)],
+            Movies(),
+            TV(),
+          ],
+        ),
       ),
     );
   }
