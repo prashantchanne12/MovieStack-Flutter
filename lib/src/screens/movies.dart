@@ -23,16 +23,18 @@ class Movies extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            heading(title: 'Top Rated'),
-            SizedBox(height: 10.0),
-            swiper(stream: moviesBloc.topRatedMovies, detailsBloc: detailsBloc),
-            SizedBox(height: 10.0),
             heading(title: 'Popular'),
             SizedBox(height: 10.0),
             swiper(stream: moviesBloc.popularMovies, detailsBloc: detailsBloc),
             SizedBox(height: 10.0),
+            heading(title: 'Top Rated'),
+            SizedBox(height: 10.0),
+            swiper(stream: moviesBloc.topRatedMovies, detailsBloc: detailsBloc),
+            SizedBox(height: 10.0),
             heading(title: 'Now Playing'),
+            SizedBox(height: 10.0),
             swiper(stream: moviesBloc.upcomingMovies, detailsBloc: detailsBloc),
+            SizedBox(height: 10.0),
           ],
         ),
       ),

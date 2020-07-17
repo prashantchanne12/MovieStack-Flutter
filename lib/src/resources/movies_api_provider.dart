@@ -78,4 +78,10 @@ class MoviesApiProvider {
     final jsonBody = json.decode(response.body);
     return jsonBody['results'];
   }
+
+  Future<List<dynamic>> fetchPopularTv(int page) async {
+    final response = await get('$kTVPopular$page');
+    final jsonBody = json.decode(response.body);
+    return jsonBody['results'];
+  }
 }
