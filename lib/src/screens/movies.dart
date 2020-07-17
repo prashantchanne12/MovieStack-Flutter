@@ -10,37 +10,36 @@ class Movies extends StatelessWidget {
   Widget build(BuildContext context) {
     MoviesBloc moviesBloc = MoviesProvider.of(context);
     DetailsBloc detailsBloc = DetailsPageProvider.of(context);
-    moviesBloc.fetchTopRatedMovies(1);
-    moviesBloc.fetchPopularMovies(1);
-    moviesBloc.fetchUpcomingMovies(1);
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            heading(title: 'Popular'),
-            SizedBox(height: 10.0),
-            swiper(
-                stream: moviesBloc.popularMovies,
-                detailsBloc: detailsBloc,
-                isMovie: true),
-            SizedBox(height: 10.0),
-            heading(title: 'Top Rated'),
-            SizedBox(height: 10.0),
-            swiper(
-                stream: moviesBloc.topRatedMovies,
-                detailsBloc: detailsBloc,
-                isMovie: true),
-            SizedBox(height: 10.0),
-            heading(title: 'Now Playing'),
-            SizedBox(height: 10.0),
-            swiper(
-                stream: moviesBloc.upcomingMovies,
-                detailsBloc: detailsBloc,
-                isMovie: true),
-            SizedBox(height: 10.0),
-          ],
-        ),
+      body: ListView(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              heading(title: 'Popular'),
+              SizedBox(height: 10.0),
+              swiper(
+                  stream: moviesBloc.popularMovies,
+                  detailsBloc: detailsBloc,
+                  isMovie: true),
+              SizedBox(height: 10.0),
+              heading(title: 'Top Rated'),
+              SizedBox(height: 10.0),
+              swiper(
+                  stream: moviesBloc.topRatedMovies,
+                  detailsBloc: detailsBloc,
+                  isMovie: true),
+              SizedBox(height: 10.0),
+              heading(title: 'Now Playing'),
+              SizedBox(height: 10.0),
+              swiper(
+                  stream: moviesBloc.upcomingMovies,
+                  detailsBloc: detailsBloc,
+                  isMovie: true),
+              SizedBox(height: 10.0),
+            ],
+          ),
+        ],
       ),
     );
   }

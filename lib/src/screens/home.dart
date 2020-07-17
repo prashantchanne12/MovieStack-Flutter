@@ -15,6 +15,7 @@ import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:movie_stack/src/resources/open_details_screen.dart';
 import 'package:movie_stack/src/screens/movies.dart';
 import 'package:movie_stack/src/screens/search.dart';
+import 'package:movie_stack/src/screens/test.dart';
 import 'package:movie_stack/src/screens/tvs.dart';
 import 'package:movie_stack/src/widgets/trending_loading_placeholder.dart';
 import 'package:movie_stack/src/widgets/trending_movies_carousel_loader.dart';

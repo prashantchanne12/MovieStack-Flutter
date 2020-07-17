@@ -39,9 +39,17 @@ class MyApp extends StatelessWidget {
     if (settings.name == '/') {
       return MaterialPageRoute(builder: (BuildContext context) {
         final homeBloc = HomeProvider.of(context);
+        final moviesBloc = MoviesProvider.of(context);
+        final tvBloc = TvProvider.of(context);
         homeBloc.fetchTrendingMovies();
         homeBloc.fetchTrendingTV();
         homeBloc.fetchTrending();
+        moviesBloc.fetchTopRatedMovies(1);
+        moviesBloc.fetchPopularMovies(1);
+        moviesBloc.fetchUpcomingMovies(1);
+        tvBloc.fetchPopularTv(1);
+        tvBloc.fetchArrivingTodayTv(1);
+        tvBloc.fetchTopRatedTv(1);
         return Home();
       });
     }

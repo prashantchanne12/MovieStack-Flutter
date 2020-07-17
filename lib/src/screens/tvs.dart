@@ -16,33 +16,32 @@ class TV extends StatelessWidget {
   Widget build(BuildContext context) {
     DetailsBloc detailsBloc = DetailsPageProvider.of(context);
     TvBloc tvBloc = TvProvider.of(context);
-    tvBloc.fetchPopularTv(1);
-    tvBloc.fetchArrivingTodayTv(1);
-    tvBloc.fetchTopRatedTv(1);
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            heading(title: 'Airing Today'),
-            swiper(
-                stream: tvBloc.arrivingTodayTv,
-                detailsBloc: detailsBloc,
-                isMovie: false),
-            SizedBox(height: 10.0),
-            heading(title: 'Popular'),
-            swiper(
-                stream: tvBloc.popularTv,
-                detailsBloc: detailsBloc,
-                isMovie: false),
-            SizedBox(height: 10.0),
-            heading(title: 'Top Rated'),
-            swiper(
-                stream: tvBloc.topRatedTv,
-                detailsBloc: detailsBloc,
-                isMovie: false),
-          ],
-        ),
+      body: ListView(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              heading(title: 'Airing Today'),
+              swiper(
+                  stream: tvBloc.arrivingTodayTv,
+                  detailsBloc: detailsBloc,
+                  isMovie: false),
+              SizedBox(height: 10.0),
+              heading(title: 'Popular'),
+              swiper(
+                  stream: tvBloc.popularTv,
+                  detailsBloc: detailsBloc,
+                  isMovie: false),
+              SizedBox(height: 10.0),
+              heading(title: 'Top Rated'),
+              swiper(
+                  stream: tvBloc.topRatedTv,
+                  detailsBloc: detailsBloc,
+                  isMovie: false),
+            ],
+          ),
+        ],
       ),
     );
   }
