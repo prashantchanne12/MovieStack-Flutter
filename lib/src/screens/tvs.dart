@@ -17,6 +17,7 @@ class TV extends StatelessWidget {
     TvBloc tvBloc = TvProvider.of(context);
     tvBloc.fetchPopularTv(1);
     tvBloc.fetchArrivingTodayTv(1);
+    tvBloc.fetchTopRatedTv(1);
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: SingleChildScrollView(
@@ -27,6 +28,9 @@ class TV extends StatelessWidget {
             SizedBox(height: 10.0),
             heading(title: 'Popular'),
             swiper(stream: tvBloc.popularTv, detailsBloc: detailsBloc),
+            SizedBox(height: 10.0),
+            heading(title: 'Top Rated'),
+            swiper(stream: tvBloc.topRatedTv, detailsBloc: detailsBloc),
           ],
         ),
       ),

@@ -84,7 +84,14 @@ class MoviesApiProvider {
 
   Future<List<dynamic>> fetchArrivingTodayTv(int page) async {
     final response = await get(
-        'https://api.themoviedb.org/3/tv/airing_today?api_key=$kApiKey&language=en-US&page=1');
+        'https://api.themoviedb.org/3/tv/airing_today?api_key=$kApiKey&language=en-US&page=$page');
+    final jsonBody = json.decode(response.body);
+    return jsonBody['results'];
+  }
+
+  Future<List<dynamic>> fetchTopRatedTv(int page) async {
+    final response = await get(
+        'https://api.themoviedb.org/3/tv/top_rated?api_key=$kApiKey&language=en-US&page=$page');
     final jsonBody = json.decode(response.body);
     return jsonBody['results'];
   }

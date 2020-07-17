@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class TvBloc {
   final _popularTv = BehaviorSubject<List<dynamic>>();
-  final _arrivingTodayTv = BehaviorSubject<List<dynamic>>();
+  final _airingTodayTv = BehaviorSubject<List<dynamic>>();
+  final _topRatedTv = BehaviorSubject<List<dynamic>>();
   final _movieApiProvider = MoviesApiProvider();
 
   // Add data to stream
@@ -15,15 +17,22 @@ class TvBloc {
 
   fetchArrivingTodayTv(int page) async {
     final tvList = await _movieApiProvider.fetchArrivingTodayTv(page);
-    _arrivingTodayTv.sink.add(tvList);
+    _airingTodayTv.sink.add(tvList);
+  }
+
+  fetchTopRatedTv(int page) async {
+    final tvList = await _movieApiProvider.fetchTopRatedTv(page);
+    _topRatedTv.sink.add(tvList);
   }
 
   // Retrieve data from stream
   Stream<List<dynamic>> get popularTv => _popularTv.stream;
-  Stream<List<dynamic>> get arrivingTodayTv => _arrivingTodayTv.stream;
+  Stream<List<dynamic>> get arrivingTodayTv => _airingTodayTv.stream;
+  Stream<List<dynamic>> get topRatedTv => _topRatedTv.stream;
 
   dispose() {
     _popularTv.close();
-    _arrivingTodayTv.close();
+    _airingTodayTv.close();
+    _topRatedTv.close();
   }
 }
