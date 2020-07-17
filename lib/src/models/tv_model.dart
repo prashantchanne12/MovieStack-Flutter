@@ -2,7 +2,7 @@ class TvModel {
   String original_name;
   int id;
   String name;
-  double vote_average;
+  var vote_average;
   String poster_path;
   String original_language;
   String backdrop_path;

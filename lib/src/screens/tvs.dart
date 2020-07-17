@@ -16,11 +16,15 @@ class TV extends StatelessWidget {
     DetailsBloc detailsBloc = DetailsPageProvider.of(context);
     TvBloc tvBloc = TvProvider.of(context);
     tvBloc.fetchPopularTv(1);
+    tvBloc.fetchArrivingTodayTv(1);
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            heading(title: 'Airing Today'),
+            swiper(stream: tvBloc.arrivingTodayTv, detailsBloc: detailsBloc),
+            SizedBox(height: 10.0),
             heading(title: 'Popular'),
             swiper(stream: tvBloc.popularTv, detailsBloc: detailsBloc),
           ],
@@ -63,7 +67,7 @@ class TV extends StatelessWidget {
               return GestureDetector(
                 onTap: () {
                   TvModel tvModel = TvModel.fromJson(snapshot.data[index]);
-                  openDetailsScreen(context, tvModel.id, true, detailsBloc);
+                  openDetailsScreen(context, tvModel.id, false, detailsBloc);
                 },
                 child: Container(
                   height: 220.0,
