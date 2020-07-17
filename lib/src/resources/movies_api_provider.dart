@@ -71,4 +71,11 @@ class MoviesApiProvider {
     final jsonBody = json.decode(response.body);
     return jsonBody['results'];
   }
+
+  Future<List<dynamic>> fetchUpcomingMovies(int page) async {
+    final response = await get(
+        'https://api.themoviedb.org/3/movie/upcoming?api_key=$kApiKey&language=en-US&page=$page');
+    final jsonBody = json.decode(response.body);
+    return jsonBody['results'];
+  }
 }

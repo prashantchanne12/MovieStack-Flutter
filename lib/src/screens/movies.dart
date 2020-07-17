@@ -17,6 +17,7 @@ class Movies extends StatelessWidget {
     DetailsBloc detailsBloc = DetailsPageProvider.of(context);
     moviesBloc.fetchTopRatedMovies(1);
     moviesBloc.fetchPopularMovies(1);
+    moviesBloc.fetchUpcomingMovies(1);
     return Scaffold(
       backgroundColor: kPrimaryColor,
       body: SingleChildScrollView(
@@ -29,6 +30,9 @@ class Movies extends StatelessWidget {
             heading(title: 'Popular'),
             SizedBox(height: 10.0),
             swiper(stream: moviesBloc.popularMovies, detailsBloc: detailsBloc),
+            SizedBox(height: 10.0),
+            heading(title: 'Now Playing'),
+            swiper(stream: moviesBloc.upcomingMovies, detailsBloc: detailsBloc),
           ],
         ),
       ),
