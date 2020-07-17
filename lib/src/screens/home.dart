@@ -12,7 +12,7 @@ import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/trending_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
-import 'package:movie_stack/src/screens/details_page.dart';
+import 'package:movie_stack/src/resources/open_details_screen.dart';
 import 'package:movie_stack/src/screens/movies.dart';
 import 'package:movie_stack/src/screens/search.dart';
 import 'package:movie_stack/src/screens/tvs.dart';
@@ -100,7 +100,7 @@ class Home extends StatelessWidget {
       children: <Widget>[
         heading(title: 'Trending'),
         trendingSwiper(bloc, detailsBloc),
-        SizedBox(height: 20.0),
+        SizedBox(height: 10.0),
         heading(title: 'Movies'),
         swiper(stream: bloc.movies, isMovie: true, detailsBloc: detailsBloc),
         SizedBox(height: 10.0),
@@ -340,22 +340,6 @@ class Home extends StatelessWidget {
             itemCount: snapshot.data.length,
           );
         },
-      ),
-    );
-  }
-
-  openDetailsScreen(
-      BuildContext context, int id, bool isMovie, DetailsBloc detailsBloc) {
-    detailsBloc.fetchDetails(id, isMovie ? 'movie' : 'tv');
-    detailsBloc.fetchCast(id, isMovie ? 'movie' : 'tv');
-    detailsBloc.fetchReviews(id);
-    detailsBloc.fetchSimilar(id, isMovie ? 'movie' : 'tv');
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => DetailsPage(
-          isMovie: isMovie,
-        ),
       ),
     );
   }

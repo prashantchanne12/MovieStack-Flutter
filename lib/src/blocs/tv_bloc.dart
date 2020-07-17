@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
