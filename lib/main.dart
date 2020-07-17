@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/blocs/home_provider.dart';
+import 'package:movie_stack/src/blocs/movies_provider.dart';
 import 'package:movie_stack/src/screens/home.dart';
 
 void main() {
@@ -14,13 +15,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return HomeProvider(
       child: DetailsPageProvider(
-        child: MaterialApp(
-          title: 'MovieStack',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            fontFamily: 'mont',
+        child: MoviesProvider(
+          child: MaterialApp(
+            title: 'MovieStack',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              fontFamily: 'mont',
+            ),
+            onGenerateRoute: routes,
           ),
-          onGenerateRoute: routes,
         ),
       ),
     );

@@ -44,16 +44,31 @@ class MoviesApiProvider {
     return jsonBody['results'];
   }
 
-  Future<List<dynamic>> fetchSimilar(int id, String tvOrMovie) async{
-    final response = await get('https://api.themoviedb.org/3/$tvOrMovie/$id/recommendations?api_key=$kApiKey&language=en-US&page=1');
+  Future<List<dynamic>> fetchSimilar(int id, String tvOrMovie) async {
+    final response = await get(
+        'https://api.themoviedb.org/3/$tvOrMovie/$id/recommendations?api_key=$kApiKey&language=en-US&page=1');
     final jsonBody = json.decode(response.body);
     return jsonBody['results'];
   }
 
-  Future<List<dynamic>> fetchSearchResults(String query) async{
-    final response = await get('https://api.themoviedb.org/3/search/multi?api_key=$kApiKey&language=en-US&query=$query&page=1&include_adult=false');
+  Future<List<dynamic>> fetchSearchResults(String query) async {
+    final response = await get(
+        'https://api.themoviedb.org/3/search/multi?api_key=$kApiKey&language=en-US&query=$query&page=1&include_adult=false');
     final jsonBody = json.decode(response.body);
     return jsonBody['results'];
   }
 
+  Future<List<dynamic>> fetchTopRatedMovies(int page) async {
+    final response = await get(
+        'https://api.themoviedb.org/3/movie/top_rated?api_key=$kApiKey&language=en-US&page=$page');
+    final jsonBody = json.decode(response.body);
+    return jsonBody['results'];
+  }
+
+  Future<List<dynamic>> fetchPopularMovies(int page) async {
+    final response = await get(
+        'https://api.themoviedb.org/3/movie/popular?api_key=$kApiKey&language=en-US&page=$page');
+    final jsonBody = json.decode(response.body);
+    return jsonBody['results'];
+  }
 }

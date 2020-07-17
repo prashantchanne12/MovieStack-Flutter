@@ -1,7 +1,7 @@
 class MovieModel {
   int id;
   int vote_count;
-  double vote_average;
+  var vote_average;
   String title;
   String release_date;
   String original_language;

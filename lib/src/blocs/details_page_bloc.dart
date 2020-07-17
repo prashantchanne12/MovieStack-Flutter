@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:movie_stack/src/models/cast_model.dart';
 import 'package:movie_stack/src/models/movie_details_model.dart';
-import 'package:movie_stack/src/models/reviews_model.dart';
 import 'package:movie_stack/src/resources/movies_api_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
