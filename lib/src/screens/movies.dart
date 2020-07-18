@@ -18,10 +18,11 @@ class Movies extends StatelessWidget {
           Column(
             children: <Widget>[
               heading(
-                  title: 'Popular',
-                  context: context,
-                  moviesBloc: moviesBloc,
-                  which: 1),
+                title: 'Popular',
+                context: context,
+                moviesBloc: moviesBloc,
+                which: 1,
+              ),
               SizedBox(height: 10.0),
               swiper(
                   stream: moviesBloc.popularMovies,
@@ -29,10 +30,11 @@ class Movies extends StatelessWidget {
                   isMovie: true),
               SizedBox(height: 20.0),
               heading(
-                  title: 'Top Rated',
-                  context: context,
-                  moviesBloc: moviesBloc,
-                  which: 2),
+                title: 'Top Rated',
+                context: context,
+                moviesBloc: moviesBloc,
+                which: 2,
+              ),
               SizedBox(height: 10.0),
               swiper(
                   stream: moviesBloc.topRatedMovies,
@@ -40,10 +42,11 @@ class Movies extends StatelessWidget {
                   isMovie: true),
               SizedBox(height: 20.0),
               heading(
-                  title: 'Now Playing',
-                  context: context,
-                  moviesBloc: moviesBloc,
-                  which: 3),
+                title: 'Now Playing',
+                context: context,
+                moviesBloc: moviesBloc,
+                which: 3,
+              ),
               SizedBox(height: 10.0),
               swiper(
                   stream: moviesBloc.upcomingMovies,
@@ -57,11 +60,12 @@ class Movies extends StatelessWidget {
     );
   }
 
-  Widget heading(
-      {@required String title,
-      @required BuildContext context,
-      @required MoviesBloc moviesBloc,
-      @required int which}) {
+  Widget heading({
+    @required String title,
+    @required BuildContext context,
+    @required MoviesBloc moviesBloc,
+    @required int which,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 10.0, top: 15.0),
       child: Row(
@@ -79,10 +83,12 @@ class Movies extends StatelessWidget {
           GestureDetector(
             onTap: () {
               moviesBloc.fetchMovies(1, which);
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => AllMovies(
+                          isMovie: true,
                           which: which,
                         )),
               );

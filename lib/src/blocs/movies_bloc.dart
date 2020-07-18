@@ -6,7 +6,9 @@ class MoviesBloc {
   final _topMovies = BehaviorSubject<List<dynamic>>();
   final _popularMovies = BehaviorSubject<List<dynamic>>();
   final _upcomingMovies = BehaviorSubject<List<dynamic>>();
-  final _movies = BehaviorSubject<List<dynamic>>();
+  final _loader = BehaviorSubject<bool>();
+  final _movies = PublishSubject<List<dynamic>>();
+
   final _moviesApiProvider = MoviesApiProvider();
 
   // Add data to the stream
@@ -49,10 +51,13 @@ class MoviesBloc {
     _movies.sink.add(movieList);
   }
 
+  Function(bool) get changeLoader => _loader.sink.add;
+
   // Retrieve data from stream
   Stream<List<dynamic>> get topRatedMovies => _topMovies.stream;
   Stream<List<dynamic>> get popularMovies => _popularMovies.stream;
   Stream<List<dynamic>> get upcomingMovies => _upcomingMovies.stream;
+  Stream<bool> get loader => _loader.stream;
   Stream<List<dynamic>> get movies => _movies.stream;
 
   dispose() {
@@ -60,5 +65,6 @@ class MoviesBloc {
     _popularMovies.close();
     _upcomingMovies.close();
     _movies.close();
+    _loader.close();
   }
 }
