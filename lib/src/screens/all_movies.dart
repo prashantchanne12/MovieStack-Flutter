@@ -3,6 +3,8 @@ import 'package:movie_stack/src/blocs/details_page_bloc.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/blocs/movies_bloc.dart';
 import 'package:movie_stack/src/blocs/movies_provider.dart';
+import 'package:movie_stack/src/blocs/tv_bloc.dart';
+import 'package:movie_stack/src/blocs/tv_provider.dart';
 import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
@@ -25,17 +27,20 @@ class AllMovies extends StatelessWidget {
   Widget build(BuildContext context) {
     movies = [];
     MoviesBloc moviesBloc = MoviesProvider.of(context);
+    TvBloc tvBloc = TvProvider.of(context);
     DetailsBloc detailsBloc = DetailsPageProvider.of(context);
 
     _scrollListener() {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
-        moviesBloc.changeLoader(true);
+//        moviesBloc.changeLoader(true);
         page++;
         print('end...');
-        moviesBloc.fetchMovies(page, which);
-        moviesBloc.changeLoader(false);
+        isMovie
+            ? moviesBloc.fetchMovies(page, which)
+            : tvBloc.fetchTvs(page, which);
+//        moviesBloc.changeLoader(false);
       }
     }
 
@@ -50,13 +55,13 @@ class AllMovies extends StatelessWidget {
         ),
       ),
       backgroundColor: kPrimaryColor,
-      body: allData(moviesBloc, detailsBloc),
+      body: allData(moviesBloc, tvBloc, detailsBloc),
     );
   }
 
-  allData(MoviesBloc moviesBloc, DetailsBloc detailsBloc) {
+  allData(MoviesBloc moviesBloc, TvBloc tvBloc, DetailsBloc detailsBloc) {
     return StreamBuilder(
-      stream: moviesBloc.movies,
+      stream: isMovie ? moviesBloc.movies : tvBloc.tvs,
       builder: (BuildContext context, snapshot) {
         if (!snapshot.hasData) {
           return Text(
@@ -94,6 +99,28 @@ class AllMovies extends StatelessWidget {
                       ],
                     ),
                     Divider(),
+//                    StreamBuilder(
+//                      stream: moviesBloc.loader,
+//                      builder: (BuildContext context, snap) {
+//                        if (!snap.hasData) {
+//                          return Container(
+//                            height: 0.0,
+//                          );
+//                        }
+//                        bool loading = snap.data;
+//                        bool isLast = true;
+//                        bool okay = loading && isLast;
+//                        print(okay);
+//                        return okay
+//                            ? Text(
+//                                'Loading...',
+//                                style: TextStyle(color: Colors.white),
+//                              )
+//                            : Container(
+//                                height: 0.0,
+//                              );
+//                      },
+//                    ),
                   ],
                 ),
               ),

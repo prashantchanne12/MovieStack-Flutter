@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
+import 'package:movie_stack/src/blocs/movies_bloc.dart';
 import 'package:movie_stack/src/blocs/tv_bloc.dart';
 import 'package:movie_stack/src/blocs/tv_provider.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
@@ -9,6 +10,7 @@ import 'package:movie_stack/src/widgets/swiper.dart';
 import 'package:movie_stack/src/widgets/trending_movies_carousel_loader.dart';
 
 import '../constants.dart';
+import 'all_movies.dart';
 import 'details_page.dart';
 
 class TV extends StatelessWidget {
@@ -22,19 +24,31 @@ class TV extends StatelessWidget {
         children: <Widget>[
           Column(
             children: <Widget>[
-              heading(title: 'Airing Today'),
+              heading(
+                  title: 'Airing Today',
+                  context: context,
+                  which: 1,
+                  tvBloc: tvBloc),
+              SizedBox(height: 10.0),
               swiper(
                   stream: tvBloc.arrivingTodayTv,
                   detailsBloc: detailsBloc,
                   isMovie: false),
               SizedBox(height: 10.0),
-              heading(title: 'Popular'),
+              heading(
+                  title: 'Popular', context: context, which: 2, tvBloc: tvBloc),
+              SizedBox(height: 10.0),
               swiper(
                   stream: tvBloc.popularTv,
                   detailsBloc: detailsBloc,
                   isMovie: false),
+              SizedBox(height: 20.0),
+              heading(
+                  title: 'Top Rated',
+                  context: context,
+                  which: 3,
+                  tvBloc: tvBloc),
               SizedBox(height: 10.0),
-              heading(title: 'Top Rated'),
               swiper(
                   stream: tvBloc.topRatedTv,
                   detailsBloc: detailsBloc,
@@ -46,25 +60,49 @@ class TV extends StatelessWidget {
     );
   }
 
-  Widget heading({@required String title}) {
+  Widget heading(
+      {@required BuildContext context,
+      @required String title,
+      @required TvBloc tvBloc,
+      @required which}) {
     return Container(
-      padding: EdgeInsets.only(left: 20.0, top: 13.0, bottom: 10.0),
+      padding: const EdgeInsets.only(left: 15.0, right: 10.0, top: 15.0),
       alignment: Alignment.centerLeft,
-      child: Text(
-        '$title',
-        style: TextStyle(
-          color: kLightGrey,
-          fontSize: 25.0,
-          fontWeight: FontWeight.w600,
-        ),
-        textAlign: TextAlign.start,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            '$title',
+            style: TextStyle(
+              color: kLightGrey,
+              fontSize: 25.0,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.start,
+          ),
+          GestureDetector(
+            onTap: () {
+              tvBloc.fetchTvs(1, which);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AllMovies(
+                          isMovie: false,
+                          which: which,
+                        )),
+              );
+            },
+            child: Text(
+              'See all',
+              style: TextStyle(
+                color: kAccentColor,
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
-
-// TODO: 2. TabController - to call fetch before loading tab
-// TODO: 3. See all
-// TODO: 4. Smooth
-// TODO: 5. remove cached to network if file size too much
-// TODO: 6. add images, trailers

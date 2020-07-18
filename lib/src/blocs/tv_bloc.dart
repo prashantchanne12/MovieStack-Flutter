@@ -7,6 +7,7 @@ class TvBloc {
   final _airingTodayTv = BehaviorSubject<List<dynamic>>();
   final _topRatedTv = BehaviorSubject<List<dynamic>>();
   final _movieApiProvider = MoviesApiProvider();
+  final _tvs = PublishSubject<List<dynamic>>();
 
   // Add data to stream
   fetchPopularTv(int page) async {
@@ -24,14 +25,39 @@ class TvBloc {
     _topRatedTv.sink.add(tvList);
   }
 
+  fetchTvs(int page, int which) async {
+    var tvList;
+
+    switch (which) {
+      case 1:
+        {
+          tvList = await _movieApiProvider.fetchArrivingTodayTv(page);
+          break;
+        }
+      case 2:
+        {
+          tvList = await _movieApiProvider.fetchPopularTv(page);
+          break;
+        }
+      case 3:
+        {
+          tvList = await _movieApiProvider.fetchTopRatedTv(page);
+          break;
+        }
+    }
+    _tvs.sink.add(tvList);
+  }
+
   // Retrieve data from stream
   Stream<List<dynamic>> get popularTv => _popularTv.stream;
   Stream<List<dynamic>> get arrivingTodayTv => _airingTodayTv.stream;
   Stream<List<dynamic>> get topRatedTv => _topRatedTv.stream;
+  Stream<List<dynamic>> get tvs => _tvs.stream;
 
   dispose() {
     _popularTv.close();
     _airingTodayTv.close();
     _topRatedTv.close();
+    _tvs.close();
   }
 }
