@@ -242,7 +242,7 @@ class DetailsPage extends StatelessWidget {
                       padding: EdgeInsets.only(left: 15.0, top: 10.0),
                       child: Text(
                         reviewsModel.content.length < 350
-                            ? reviewsModel.content.length
+                            ? reviewsModel.content
                             : reviewsModel.content.substring(0, 350) + '...',
                         style: TextStyle(
                           color: Colors.white,
