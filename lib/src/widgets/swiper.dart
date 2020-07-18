@@ -35,7 +35,7 @@ Widget swiper(
                 model = isMovie
                     ? MovieModel.fromJson(snapshot.data[index])
                     : TvModel.fromJson(snapshot.data[index]);
-                openDetailsScreen(context, model.id, true, detailsBloc);
+                openDetailsScreen(context, model.id, isMovie, detailsBloc);
               },
               child: Container(
                 height: 220.0,

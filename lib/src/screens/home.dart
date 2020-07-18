@@ -42,6 +42,7 @@ class Home extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: kAccentColor,
+                letterSpacing: 1.4,
               ),
             ),
             bottom: TabBar(
