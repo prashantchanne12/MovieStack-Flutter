@@ -9,7 +9,7 @@
 <p float="left">
   <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/1.png" width="260" />
   &nbsp&nbsp&nbsp&nbsp
-  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/1.1png" width="260" />
+  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/1.1.png" width="260" />
   &nbsp&nbsp&nbsp&nbsp
   <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/2.png" width="260" />
 </p>
@@ -23,7 +23,7 @@
 <p float="left">
   <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/3.png" width="260" />
   &nbsp&nbsp&nbsp&nbsp
-  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/4.1png" width="260" />
+  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/4.png" width="260" />
   &nbsp&nbsp&nbsp&nbsp
   <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/5.png" width="260" />
 </p>
@@ -35,7 +35,7 @@
 <p float="left">
   <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/6.png" width="260" />
   &nbsp&nbsp&nbsp&nbsp
-  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/7.1png" width="260" />
+  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/7.png" width="260" />
   &nbsp&nbsp&nbsp&nbsp
   <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/8.png" width="260" />
 </p>
