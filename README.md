@@ -1,3 +1,8 @@
 # MovieStack
 
-A new Flutter application.
+📽 Movie Info App made with Flutter using BLoC pattern
+
+---
+
+
+
