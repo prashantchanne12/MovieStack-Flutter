@@ -6,6 +6,7 @@ class MoviesBloc {
   final _topMovies = BehaviorSubject<List<dynamic>>();
   final _popularMovies = BehaviorSubject<List<dynamic>>();
   final _upcomingMovies = BehaviorSubject<List<dynamic>>();
+  final _movies = BehaviorSubject<List<dynamic>>();
   final _moviesApiProvider = MoviesApiProvider();
 
   // Add data to the stream
@@ -24,14 +25,40 @@ class MoviesBloc {
     _upcomingMovies.sink.add(moviesList);
   }
 
+  fetchMovies(int page, int which) async {
+    var movieList;
+
+    switch (which) {
+      case 1:
+        {
+          movieList = await _moviesApiProvider.fetchPopularMovies(page);
+          break;
+        }
+      case 2:
+        {
+          movieList = await _moviesApiProvider.fetchTopRatedMovies(page);
+          break;
+        }
+      case 3:
+        {
+          movieList = await _moviesApiProvider.fetchUpcomingMovies(page);
+          break;
+        }
+    }
+
+    _movies.sink.add(movieList);
+  }
+
   // Retrieve data from stream
   Stream<List<dynamic>> get topRatedMovies => _topMovies.stream;
   Stream<List<dynamic>> get popularMovies => _popularMovies.stream;
   Stream<List<dynamic>> get upcomingMovies => _upcomingMovies.stream;
+  Stream<List<dynamic>> get movies => _movies.stream;
 
   dispose() {
     _topMovies.close();
     _popularMovies.close();
     _upcomingMovies.close();
+    _movies.close();
   }
 }

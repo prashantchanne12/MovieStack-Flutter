@@ -3,6 +3,7 @@ import 'package:movie_stack/src/blocs/details_page_provider.dart';
 import 'package:movie_stack/src/blocs/movies_bloc.dart';
 import 'package:movie_stack/src/blocs/movies_provider.dart';
 import 'package:movie_stack/src/constants.dart';
+import 'package:movie_stack/src/screens/all_movies.dart';
 import 'package:movie_stack/src/widgets/swiper.dart';
 
 class Movies extends StatelessWidget {
@@ -16,21 +17,33 @@ class Movies extends StatelessWidget {
         children: <Widget>[
           Column(
             children: <Widget>[
-              heading(title: 'Popular'),
+              heading(
+                  title: 'Popular',
+                  context: context,
+                  moviesBloc: moviesBloc,
+                  which: 1),
               SizedBox(height: 10.0),
               swiper(
                   stream: moviesBloc.popularMovies,
                   detailsBloc: detailsBloc,
                   isMovie: true),
-              SizedBox(height: 10.0),
-              heading(title: 'Top Rated'),
+              SizedBox(height: 20.0),
+              heading(
+                  title: 'Top Rated',
+                  context: context,
+                  moviesBloc: moviesBloc,
+                  which: 2),
               SizedBox(height: 10.0),
               swiper(
                   stream: moviesBloc.topRatedMovies,
                   detailsBloc: detailsBloc,
                   isMovie: true),
-              SizedBox(height: 10.0),
-              heading(title: 'Now Playing'),
+              SizedBox(height: 20.0),
+              heading(
+                  title: 'Now Playing',
+                  context: context,
+                  moviesBloc: moviesBloc,
+                  which: 3),
               SizedBox(height: 10.0),
               swiper(
                   stream: moviesBloc.upcomingMovies,
@@ -44,18 +57,46 @@ class Movies extends StatelessWidget {
     );
   }
 
-  Widget heading({@required String title}) {
-    return Container(
-      padding: EdgeInsets.only(left: 20.0, top: 10.0, bottom: 10.0),
-      alignment: Alignment.centerLeft,
-      child: Text(
-        '$title',
-        style: TextStyle(
-          color: kLightGrey,
-          fontSize: 25.0,
-          fontWeight: FontWeight.w600,
-        ),
-        textAlign: TextAlign.start,
+  Widget heading(
+      {@required String title,
+      @required BuildContext context,
+      @required MoviesBloc moviesBloc,
+      @required int which}) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15.0, right: 10.0, top: 15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            '$title',
+            style: TextStyle(
+              color: kLightGrey,
+              fontSize: 25.0,
+              fontWeight: FontWeight.w600,
+            ),
+            textAlign: TextAlign.start,
+          ),
+          GestureDetector(
+            onTap: () {
+              moviesBloc.fetchMovies(1, which);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AllMovies(
+                          which: which,
+                        )),
+              );
+            },
+            child: Text(
+              'See all',
+              style: TextStyle(
+                color: kAccentColor,
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
