@@ -7,7 +7,7 @@ class TvBloc {
   final _airingTodayTv = BehaviorSubject<List<dynamic>>();
   final _topRatedTv = BehaviorSubject<List<dynamic>>();
   final _movieApiProvider = MoviesApiProvider();
-  final _tvs = PublishSubject<List<dynamic>>();
+  final _tvs = BehaviorSubject<List<dynamic>>();
 
   // Add data to stream
   fetchPopularTv(int page) async {

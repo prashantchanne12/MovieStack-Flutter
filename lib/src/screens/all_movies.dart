@@ -9,6 +9,7 @@ import 'package:movie_stack/src/constants.dart';
 import 'package:movie_stack/src/models/movie_model.dart';
 import 'package:movie_stack/src/models/tv_model.dart';
 import 'package:movie_stack/src/resources/open_details_screen.dart';
+import 'package:movie_stack/src/widgets/all_movies_shows_loading_placeholder.dart';
 
 var movies = [];
 String position = '';
@@ -20,8 +21,10 @@ class AllMovies extends StatelessWidget {
   final ScrollController _scrollController = ScrollController();
   final int which;
   final bool isMovie;
+  final String title;
 
-  AllMovies({@required this.which, @required this.isMovie});
+  AllMovies(
+      {@required this.which, @required this.isMovie, @required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +53,7 @@ class AllMovies extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: kPrimaryColor,
         title: Text(
-          'Hello',
+          '$title',
           style: TextStyle(fontWeight: FontWeight.bold, color: kLightGrey),
         ),
       ),
@@ -64,12 +67,7 @@ class AllMovies extends StatelessWidget {
       stream: isMovie ? moviesBloc.movies : tvBloc.tvs,
       builder: (BuildContext context, snapshot) {
         if (!snapshot.hasData) {
-          return Text(
-            'Loading',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          );
+          return seeAllLoadingPlaceholder();
         }
         movies.addAll(snapshot.data);
         return ListView.builder(
@@ -164,7 +162,7 @@ class AllMovies extends StatelessWidget {
                       : '${model.name.toString().length < 15 ? model.name : model.name.toString().substring(0, 15) + '..'}',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
+                    fontSize: 17.0,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -176,7 +174,7 @@ class AllMovies extends StatelessWidget {
                       : ' (${model.first_air_date.toString().substring(0, 4)})',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18.0,
+                    fontSize: 17.0,
                   ),
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,

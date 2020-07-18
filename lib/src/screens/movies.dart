@@ -83,6 +83,24 @@ class Movies extends StatelessWidget {
           GestureDetector(
             onTap: () {
               moviesBloc.fetchMovies(1, which);
+              String title = '';
+              switch (which) {
+                case 1:
+                  {
+                    title = 'Popular Movies';
+                    break;
+                  }
+                case 2:
+                  {
+                    title = 'Top Rated Movies';
+                    break;
+                  }
+                case 3:
+                  {
+                    title = 'Now Playing Movies';
+                    break;
+                  }
+              }
 
               Navigator.push(
                 context,
@@ -90,15 +108,19 @@ class Movies extends StatelessWidget {
                     builder: (context) => AllMovies(
                           isMovie: true,
                           which: which,
+                          title: title,
                         )),
               );
             },
-            child: Text(
-              'See all',
-              style: TextStyle(
-                color: kAccentColor,
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold,
+            child: Container(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Text(
+                'See all',
+                style: TextStyle(
+                  color: kAccentColor,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           )

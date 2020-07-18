@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
@@ -40,6 +41,7 @@ class Home extends StatelessWidget {
               'MovieStack',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
+                color: kAccentColor,
               ),
             ),
             bottom: TabBar(

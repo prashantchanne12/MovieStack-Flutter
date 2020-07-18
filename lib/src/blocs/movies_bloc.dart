@@ -7,8 +7,7 @@ class MoviesBloc {
   final _popularMovies = BehaviorSubject<List<dynamic>>();
   final _upcomingMovies = BehaviorSubject<List<dynamic>>();
   final _loader = BehaviorSubject<bool>();
-  final _movies = PublishSubject<List<dynamic>>();
-
+  final _movies = BehaviorSubject<List<dynamic>>();
   final _moviesApiProvider = MoviesApiProvider();
 
   // Add data to the stream

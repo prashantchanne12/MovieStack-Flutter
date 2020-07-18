@@ -77,21 +77,44 @@ class TV extends StatelessWidget {
           GestureDetector(
             onTap: () {
               tvBloc.fetchTvs(1, which);
+              String title = '';
+              switch (which) {
+                case 1:
+                  {
+                    title = 'Airing Today';
+                    break;
+                  }
+                case 2:
+                  {
+                    title = 'Popular SHows';
+                    break;
+                  }
+                case 3:
+                  {
+                    title = 'Top Rated Shows';
+                    break;
+                  }
+              }
+
               Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => AllMovies(
                           isMovie: false,
                           which: which,
+                          title: title,
                         )),
               );
             },
-            child: Text(
-              'See all',
-              style: TextStyle(
-                color: kAccentColor,
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold,
+            child: Container(
+              padding: EdgeInsets.only(top: 10.0),
+              child: Text(
+                'See all',
+                style: TextStyle(
+                  color: kAccentColor,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
