@@ -28,7 +28,7 @@ class Movies extends StatelessWidget {
                   stream: moviesBloc.popularMovies,
                   detailsBloc: detailsBloc,
                   isMovie: true),
-              SizedBox(height: 20.0),
+              SizedBox(height: 15.0),
               heading(
                 title: 'Top Rated',
                 context: context,

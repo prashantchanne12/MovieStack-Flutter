@@ -1,17 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_stack/src/blocs/details_page_provider.dart';
-import 'package:movie_stack/src/blocs/movies_bloc.dart';
 import 'package:movie_stack/src/blocs/tv_bloc.dart';
 import 'package:movie_stack/src/blocs/tv_provider.dart';
-import 'package:movie_stack/src/models/tv_model.dart';
-import 'package:movie_stack/src/resources/open_details_screen.dart';
 import 'package:movie_stack/src/widgets/swiper.dart';
-import 'package:movie_stack/src/widgets/trending_movies_carousel_loader.dart';
 
 import '../constants.dart';
 import 'all_movies.dart';
-import 'details_page.dart';
 
 class TV extends StatelessWidget {
   @override

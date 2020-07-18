@@ -89,6 +89,7 @@ Widget swiper(
                         Icon(
                           Icons.stars,
                           color: kAccentColor,
+                          size: 13.0,
                         ),
                         SizedBox(
                           width: 5.0,
@@ -96,7 +97,8 @@ Widget swiper(
                         Text(
                           '${model.vote_average}',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: kLightGrey,
+                            fontSize: 13.0,
                           ),
                         ),
                       ],
