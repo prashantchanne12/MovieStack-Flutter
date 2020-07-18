@@ -189,7 +189,7 @@ class Home extends StatelessWidget {
             viewportFraction: 0.9,
             scale: 0.8,
             loop: true,
-            autoplay: false,
+            autoplay: true,
             autoplayDelay: 10000,
             curve: Curves.easeInOut,
           );
