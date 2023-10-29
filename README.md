@@ -7,11 +7,11 @@
 ## Demo
 
 <p float="left">
-  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/1.png" width="260" />
+  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/1.png" width="240" />
   &nbsp&nbsp&nbsp&nbsp
-  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/1.1.png" width="260" />
+  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/1.1.png" width="240" />
   &nbsp&nbsp&nbsp&nbsp
-  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/2.png" width="260" />
+  <img src="https://github.com/prashantchanne12/MovieStack-Flutter/blob/master/screenshots/2.png" width="240" />
 </p>
 
 
